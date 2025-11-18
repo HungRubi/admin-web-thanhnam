@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { Input, Button, Combobox, Textarea } from '../components';
 import icon from '../util/icon';
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from '../store/actions';
 const { MdChevronRight } = icon;
 const CategoryEdit = () => {
     const [files, setFiles] = useState([]);
@@ -23,11 +25,55 @@ const CategoryEdit = () => {
     const removeFile = (id, setFiles, files) => {
         setFiles(files.filter((f) => f.id !== id));
     };
-    const data = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
-        { id: 3, name: 'Category 3' },
-    ]
+    const {id} = useParams()
+    const dispatch = useDispatch();
+    const {category, categoryEdit, message, tendanhmucErr, slugErr} = useSelector(state => state.app);
+    useEffect(() => {
+        dispatch(actions.getCategory());
+        dispatch(actions.getCategoryEdit(id));
+    }, [dispatch, id])
+    const [formData, setFormData] = useState({
+        tendanhmuc: '',
+        slug: '',
+        danhmuccha: '',
+        image: '',
+        mota: '',
+        metatitle: '',
+        metakeywords: '',
+        metadescription: '',
+        sapxep: ''
+    })
+    useEffect(() => {
+        if(categoryEdit) {
+            setFormData({
+                tendanhmuc: categoryEdit.tendanhmuc || "",
+                slug: categoryEdit.slug || "",
+                danhmuccha: categoryEdit.danhmuccha || "",
+                image: categoryEdit.image || "",
+                mota: categoryEdit.mota || "",
+                metatitle: categoryEdit.metatitle || "",
+                metakeywords: categoryEdit.metakeywords || "",
+                metadescription: categoryEdit.metadescription || "",
+                sapxep: categoryEdit.sapxep || "",
+            })
+        }
+    }, [categoryEdit])
+    const handleChange = (e, selected) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: selected ? selected.id : e.target.value,
+        })
+    }
+    const handleSubmit  = (e) => {
+        e.preventDefault();
+        dispatch(actions.updateCategory(id, formData))
+    }
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(message === "Cập nhật danh mục thành công!"){
+            navigate("/")
+        }
+    }, [message, navigate])
     return (
         <div className="full pt-5">
             <div className="w-full px-[30px] flex gap-8">
@@ -48,7 +94,7 @@ const CategoryEdit = () => {
                     <h2 className="text-[35px] font-semibold">Thêm mới danh mục</h2>
                 </div>
             </div>
-            <form className="w-full px-[30px] bg-white mt-8 min-h-screen">
+            <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
                 <div className="w-full flex border-b-custom py-10">
                     <div className="w-2/6 ">
                         <h5 className="text-[20px] font-medium text-black text-color mt-5">
@@ -61,17 +107,43 @@ const CategoryEdit = () => {
                     <div className="flex-1">
                         <Input 
                             label={"Tên danh mục"} 
-                            name={"categoryName"}
+                            name={"tendanhmuc"}
+                            onChange={handleChange}
+                            value={formData?.tendanhmuc}
                         />
+                        {
+                            tendanhmucErr && 
+                            <p className="text-red-500 text-[11px] mt-1">
+                                {tendanhmucErr}
+                            </p>
+                        }
                         <Input 
                             label={"Slug"} 
                             name={"slug"}
+                            onChange={handleChange}
+                            value={formData?.slug}
+                        />
+                        {
+                            slugErr && 
+                            <p className="text-red-500 text-[11px] mt-1">
+                                {slugErr}
+                            </p>
+                        }
+                        <Input 
+                            label={"Thứ tự"} 
+                            name={"sapxep"}
+                            onChange={handleChange}
+                            value={formData?.sapxep}
                         />
                         <div className="mt-5"></div>
                         <Combobox
                             label={"Danh mục cha"}
-                            data={data}
+                            name={"danhmuccha"}
+                            data={category}
+                            onChange={handleChange}
+                            selected={formData?.danhmuccha}
                         />
+
                         <div>
                             <h1 className="block text-[16px] font-medium text-gray-800 mt-5 mb-2.5">Avatar</h1>
                             <div className="mb-5">
@@ -133,22 +205,34 @@ const CategoryEdit = () => {
                                 )}
                             </div>
                         </div>
+
                         <Textarea
                             label={"Mô tả"}
+                            name={"mota"}
                             row={5}
+                            onChange={handleChange}
+                            children={formData?.mota}
                         />
                         <Input 
                             label={"Meta title"} 
-                            name={"metaTitle"}
+                            name={"metatitle"}
+                            placeholder={"Meta title"}
+                            onChange={handleChange}
+                            value={formData?.metatitle}
                         />
                         <Input 
                             label={"Meta keyword"} 
-                            name={"metaKeyword"}
+                            name={"metakeywords"}
+                            placeholder={"Meta keyword"}
+                            onChange={handleChange}
+                            value={formData?.metakeywords}
                         />
                         <Textarea 
                             label={"Meta description"} 
-                            name={"metaDescription"}
+                            name={"metadescription"}
                             row={5}
+                            onChange={handleChange}
+                            children={formData?.metadescription}
                         />
                     </div>
                 </div>

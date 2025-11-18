@@ -21,9 +21,10 @@ const Combobox = ({ data, label, name, selected, onChange, className, isLable })
                 aria-label="Default select example" 
                 name={name}
             >
+                <option value="">--- Choice ---</option>
                 {data?.map((item, index) => (
                     <option key={index} value={(item.id || item._id)?.toString()}>
-                        {item.text || item.order_code || item.name || item.title}
+                        {item.text || item.tendanhmuc || item.name || item.title} 
                     </option>
                 ))}
             </select>

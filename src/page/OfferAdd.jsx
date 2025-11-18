@@ -5,7 +5,7 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 const { MdChevronRight } = icon;
-const CategoryAdd = () => {
+const OfferAdd = () => {
     const [files, setFiles] = useState([]);
 
     const handleFileChange = (e) => {
@@ -66,25 +66,25 @@ const CategoryAdd = () => {
                             Home
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/'} className={"text-blue-600"}>
-                            Danh mục
+                        <NavLink to={'/offer'} className={"text-blue-600"}>
+                            Offer
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/category-add'} className={"text-blue-600"}>
-                            Thêm mới danh mục
+                        <NavLink to={'/offer/add'} className={"text-blue-600"}>
+                            Thêm mới offer
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Thêm mới danh mục</h2>
+                    <h2 className="text-[35px] font-semibold">Thêm mới offer</h2>
                 </div>
             </div>
             <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
                 <div className="w-full flex border-b-custom py-10">
                     <div className="w-2/6 ">
                         <h5 className="text-[20px] font-medium text-black text-color mt-5">
-                            Thông tin danh mục
+                            Thông tin offer
                         </h5>
                         <p className="text-[12px] text-[#888] line-clamp-2">
-                            Thông tin chi tiết về danh mục
+                            Thông tin chi tiết về offer
                         </p>
                     </div>
                     <div className="flex-1">
@@ -235,4 +235,4 @@ const CategoryAdd = () => {
     )
 }
 
-export default CategoryAdd
+export default OfferAdd

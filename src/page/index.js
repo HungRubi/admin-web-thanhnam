@@ -1,6 +1,7 @@
 export {default as Public} from './Public';
 export {default as Dashboard} from './Dashboard';
 export {default as Store} from './Store';
+export {default as CategoryEdit} from './CategoryEdit';
 export {default as Offer} from './Offer';
 export {default as Deal} from './Deal';
 export {default as New} from './New';
@@ -15,3 +16,6 @@ export {default as SocialConfig} from './SocialConfig';
 export {default as SeoConfig} from './SeoConfig';
 export {default as ContentConfig} from './ContentConfig';
 export {default as CategoryAdd} from './CategoryAdd';
+export {default as StoreAdd} from './StoreAdd';
+export {default as StoreEdit} from './StoreEdit';
+export {default as OfferAdd} from './OfferAdd';

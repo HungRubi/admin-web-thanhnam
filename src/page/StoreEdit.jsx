@@ -1,11 +1,31 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Input, Button, Combobox, Textarea } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 const { MdChevronRight } = icon;
-const CategoryAdd = () => {
+const StoreEdit = () => {
+    const {id} = useParams();
+    const eventData = [
+        { id: "Uncategorized", text: "Uncategorized" },
+        { id: "Black Friday", text: "Black Friday" },
+        { id: "Boxing Day", text: "Boxing Day" },
+        { id: "Christmas", text: "Christmas" },
+        { id: "Halloween", text: "Halloween" },
+        { id: "Thanksgiving", text: "Thanksgiving" },
+        { id: "Valentine", text: "Valentine" },
+    ];
+    const duyetbatData = [
+        {
+            id: 'Yes',
+            text: 'Yes'
+        },
+        {
+            id: 'No',
+            text: 'No'
+        }
+    ]
     const [files, setFiles] = useState([]);
 
     const handleFileChange = (e) => {
@@ -26,35 +46,61 @@ const CategoryAdd = () => {
         setFiles(files.filter((f) => f.id !== id));
     };
     const dispatch = useDispatch();
-    const {category, message, slugErr, tendanhmucErr} = useSelector(state => state.app)
+    const {category, message, slugStoreErr, tenstoreErr, danhmucErr, storeEdit} = useSelector(state => state.app)
     useEffect(() => {
         dispatch(actions.getCategory());
-    }, [dispatch])
+        dispatch(actions.getStoreEdit(id))
+    }, [dispatch, id])
     const [formData, setFormData] = useState({
-        tendanhmuc: '',
+        tenstore: '',
         slug: '',
-        danhmuccha: '',
+        danhmuc: '',
+        stt: '999',
+        event: 'Uncategorized',
         image: '',
-        mota: '',
+        duyetbai: 'Yes',
+        motangan: '',
+        about: '',
+        howtoapply: '',
+        faqs: '',
         metatitle: '',
-        metakeywords: '',
         metadescription: '',
-        sapxep: '',
+        metakeywords: '',
     })
+    useEffect(() => {
+        if(storeEdit) {
+            setFormData({
+                tenstore: storeEdit?.tenstore || '',
+                slug: storeEdit?.slug || '',
+                danhmuc: storeEdit?.danhmuc || '',
+                stt: storeEdit?.stt || '999',
+                event: storeEdit?.event || 'Uncategorized',
+                image: storeEdit?.image || '',
+                duyetbai: storeEdit?.duyetbai || 'Yes',
+                motangan: storeEdit?.motangan || '',
+                about: storeEdit?.about || '',
+                howtoapply: storeEdit?.howtoapply || '',
+                faqs: storeEdit?.faqs || '',
+                metatitle: storeEdit?.metatitle || '',
+                metadescription: storeEdit?.metadescription || '',
+                metakeywords: storeEdit?.metakeywords || '',
+            })
+        }
+    }, [storeEdit])
     const handleChange = (e, selected) => {
         setFormData({
             ...formData,
-            [e.target.name]: selected ? selected.id : e.target.value,
+            [e.target.name]: selected ? selected.id || selected._id : e.target.value,
         })
     }
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.addCategory(formData))
+        dispatch(actions.updateStore(id, formData))
     }
     const navigate = useNavigate();
     useEffect(() => {
-        if(message === "Thêm danh mục thành công!"){
-            navigate("/")
+        if(message === "Cập nhật cửa hàng thành công :))"){
+            navigate("/store")
         }
     }, [message, navigate])
     return (
@@ -66,15 +112,11 @@ const CategoryAdd = () => {
                             Home
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/'} className={"text-blue-600"}>
-                            Danh mục
-                        </NavLink>
-                        <MdChevronRight/>
-                        <NavLink to={'/category-add'} className={"text-blue-600"}>
-                            Thêm mới danh mục
+                        <NavLink to={`/store/${id}`} className={"text-blue-600"}>
+                            Update Store
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Thêm mới danh mục</h2>
+                    <h2 className="text-[35px] font-semibold">Cập nhật store</h2>
                 </div>
             </div>
             <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
@@ -89,15 +131,15 @@ const CategoryAdd = () => {
                     </div>
                     <div className="flex-1">
                         <Input 
-                            label={"Tên danh mục"} 
-                            name={"tendanhmuc"}
+                            label={"Tên store"} 
+                            name={"tenstore"}
                             onChange={handleChange}
-                            value={formData?.tendanhmuc}
+                            value={formData?.tenstore}
                         />
                         {
-                            tendanhmucErr && 
+                            tenstoreErr && 
                             <p className="text-red-500 text-[11px] mt-1">
-                                {tendanhmucErr}
+                                {tenstoreErr}
                             </p>
                         }
                         
@@ -108,25 +150,39 @@ const CategoryAdd = () => {
                             value={formData?.slug}
                         />
                         {
-                            slugErr && 
+                            slugStoreErr && 
                             <p className="text-red-500 text-[11px] mt-1">
-                                {slugErr}
+                                {slugStoreErr}
                             </p>
                         }
                         <Input 
                             label={"Thứ tự"} 
                             type={"number"}
-                            name={"sapxep"}
+                            name={"stt"}
                             onChange={handleChange}
-                            value={formData?.sapxep}
+                            value={formData?.stt}
                         />
                         <div className="mt-5"></div>
                         <Combobox
-                            label={"Danh mục cha"}
-                            name={"danhmuccha"}
+                            label={"Danh mục"}
+                            name={"danhmuc"}
                             data={category}
                             onChange={handleChange}
-                            selected={formData?.danhmuccha}
+                            selected={formData?.danhmuc}
+                        />
+                        {
+                            danhmucErr && 
+                            <p className="text-red-500 text-[11px] mt-1">
+                                {danhmucErr}
+                            </p>
+                        }
+                        <div className="mt-5"></div>
+                        <Combobox
+                            label={"Events"}
+                            name={"event"}
+                            data={eventData}
+                            onChange={handleChange}
+                            selected={formData?.event}
                         />
                         <div>
                             <h1 className="block text-[16px] font-medium text-gray-800 mt-5 mb-2.5">Avatar</h1>
@@ -189,13 +245,41 @@ const CategoryAdd = () => {
                                 )}
                             </div>
                         </div>
-
+                        <div className="mt-5"></div>
+                        <Combobox
+                            label={"Duyệt bài"}
+                            name={"duyetbai"}
+                            data={duyetbatData}
+                            onChange={handleChange}
+                            selected={formData?.duyetbai}
+                        />
                         <Textarea
-                            label={"Mô tả"}
-                            name={"mota"}
+                            label={"Mô tả ngắn"}
+                            name={"motangan"}
                             row={5}
                             onChange={handleChange}
-                            children={formData?.mota}
+                            children={formData?.motangan}
+                        />
+                        <Textarea
+                            label={"About store"}
+                            name={"about"}
+                            row={5}
+                            onChange={handleChange}
+                            children={formData?.about}
+                        />
+                        <Textarea
+                            label={"About store"}
+                            name={"howtoapply"}
+                            row={5}
+                            onChange={handleChange}
+                            children={formData?.howtoapply}
+                        />
+                        <Textarea
+                            label={"About store"}
+                            name={"faqs"}
+                            row={5}
+                            onChange={handleChange}
+                            children={formData?.faqs}
                         />
                         <Input 
                             label={"Meta title"} 
@@ -235,4 +319,4 @@ const CategoryAdd = () => {
     )
 }
 
-export default CategoryAdd
+export default StoreEdit

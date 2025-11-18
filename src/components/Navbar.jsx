@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { menu } from "../util/menu";
 import icon from "../util/icon";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const { BsArrowBarLeft } = icon;
 
@@ -20,18 +20,18 @@ const Navbar = () => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
 
-  const handleClickOutside = (event) => {
-    if (navRef.current && !navRef.current.contains(event.target)) {
-      setOpenIndex(null);
-    }
-  };
+  // const handleClickOutside = (event) => {
+  //   if (navRef.current && !navRef.current.contains(event.target)) {
+  //     setOpenIndex(null);
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   return (
     <nav

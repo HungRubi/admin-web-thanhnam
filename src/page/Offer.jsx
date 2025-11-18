@@ -81,7 +81,7 @@ const Offer = () => {
                         </select>
                     </div>
                     <div className="flex items-center justify-end gap-3">
-                        <NavLink to={'/product/add'}>
+                        <NavLink to={'/offer/add'}>
                             <Button className={"gap-2.5 py-1.5! border-none! bg-blue-500 text-white hover:bg-blue-600 text-sm"}>
                                 <CircleButton className={'h-4! w-4! bg-white!'}>
                                     <IoMdAdd className='text-blue-600 text-sm'/>
