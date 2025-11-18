@@ -15,6 +15,11 @@ const initState = {
 
     offer: [],
     offerEdit: {},
+
+    deal: [],
+    dealEdit: {},
+
+    news: [],
 }
 
 const appReducer = (state = initState, action) => {
@@ -206,10 +211,80 @@ const appReducer = (state = initState, action) => {
                 offer: action.payload.offerFormat || []
             }
 
-         case actionType.FILTER_OFFER:
+        case actionType.FILTER_OFFER:
             return {
                 ...state,
                 offer: action.payload.offer || [],
+            }
+
+        /** DEAL */
+        case actionType.GET_DEAL:
+            return {
+                ...state,
+                deal: action.payload.search 
+                ? action.payload.data.data.searchDeal || [] 
+                : action.payload.data.data.dealFormat || [],
+            }
+
+        case actionType.ADD_DEAL:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_DEAL_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+            }
+
+        case actionType.GET_DEAL_EDIT:
+            return {
+                ...state,
+                dealEdit: action.payload.data.deal || {},
+            }
+        
+        case actionType.UPDATE_DEAL:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.UPDATE_DEAL_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+            }
+
+        case actionType.DELETE_DEAL:
+            return {
+                ...state,
+                message: action.payload.message,
+                deal: action.payload.deal || []
+            }
+
+        case actionType.DELETE_MANY_DEAL:
+            return {
+                ...state,
+                message: action.payload.message,
+                deal: action.payload.dealFormat || []
+            }
+
+        case actionType.FILTER_DEAL:
+            return {
+                ...state,
+                deal: action.payload.deals || [],
+            }
+
+        /** NEWS */
+        case actionType.GET_NEW:
+            return {
+                ...state,
+                news: action.payload.search 
+                ? action.payload.data.data.searchNew || [] 
+                : action.payload.data.data.newFormat || [],
             }
 
         default:

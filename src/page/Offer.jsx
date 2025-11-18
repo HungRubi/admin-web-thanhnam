@@ -58,7 +58,7 @@ const Offer = () => {
             dispatch(actions.deleteOffer(deleteItem)); 
         } else if (selectedIds.length > 0) {
             dispatch(actions.deleteManyOffer(selectedIds)); 
-            setDeleteItem([])
+            setSelectedIds([])
         }
     }
 
@@ -244,7 +244,6 @@ const Offer = () => {
                                     <td className="px-4 py-4 w-2/11">
                                         {item?.store?.tenstore}
                                     </td>
-                                    
                                     <td className="px-4 py-4 w-1/10">
                                         {item.formatDate}
                                     </td>

@@ -1,40 +1,33 @@
-import  { Search, Button, CircleButton } from '../components';
+import  { Search, Button, CircleButton, PageBar, ModelToast, Empty } from '../components';
 import icon from '../util/icon';
 import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import * as actions from '../store/actions'
+import { useSelector, useDispatch } from 'react-redux';
 const { MdChevronRight, MdAutoFixHigh, IoMdAdd, RiDeleteBin6Line, IoMdRefresh} = icon;
 const New = () => {
-    const category = [
-        {
-            id: 'Post',
-            name: 'Post',
-        },
-        {
-            id: 'Event',
-            name: 'Event',
-        },
-        {
-            id: 'Service',
-            name: 'Service',
-        },
-        {
-            id: 'Deal',
-            name: 'Deal',
-        }
-    ]
     const status = [
         {
-            id: 'chưa duyệt',
-            name: 'Chưa duyệt',
+            id: 'Yes',
+            name: 'Yes',
         },
         {
-            id: 'đã duyệt',
-            name: 'Đã duyệt',
+            id: 'No',
+            name: 'No',
         },
-        {
-            id: 'tất cả',
-            name: 'Tất cả trạng thái',
-        }
     ]
+    const dispatch = useDispatch();
+    const {category, news} = useSelector(state => state.app);
+    useEffect(() => {
+        dispatch(actions.getCategory());
+        dispatch(actions.getNews());
+    }, [dispatch])
+
+    const [current, setCurrent] = useState(1);
+        const limit = 10;
+        const lastIndex = current * limit;
+        const firstIndex = lastIndex - limit;
+        const currentNews = news?.slice(firstIndex, lastIndex);
     return (
         <div className="full pt-5">
             <div className="w-full px-[30px] flex gap-8">
@@ -64,7 +57,7 @@ const New = () => {
                         >
                             <option value="">--- Danh mục store ---</option>
                             {category?.map((item, index) => (
-                                <option key={index} value={item._id}>{item.name}</option>
+                                <option key={index} value={item._id}>{item.tendanhmuc}</option>
                             ))}
                         </select>
                         <select 
@@ -81,7 +74,7 @@ const New = () => {
                         </select>
                     </div>
                     <div className="flex items-center justify-end gap-3">
-                        <NavLink to={'/product/add'}>
+                        <NavLink to={'/new/add'}>
                             <Button className={"gap-2.5 py-1.5! border-none! bg-blue-500 text-white hover:bg-blue-600 text-sm"}>
                                 <CircleButton className={'h-4! w-4! bg-white!'}>
                                     <IoMdAdd className='text-blue-600 text-sm'/>
@@ -120,9 +113,6 @@ const New = () => {
                                     Danh mục
                                 </th>
                                 <th scope="col" className="px-4 py-3">
-                                    STT
-                                </th>
-                                <th scope="col" className="px-4 py-3">
                                     Ngày đăng
                                 </th>
                                 <th scope="col" className="px-4 py-3">
@@ -131,52 +121,72 @@ const New = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 row-table">
-                                <td className="px-2 py-4 w-10 text-center">
-                                    <span className='text-base font-semibold'>1</span>
-                                </td>
-                                <td className="px-2 py-4 w-10">
-                                    <input type="checkbox" className='scale-120'/>
-                                </td>
-                                <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-5/13">
-                                    Đồng hồ siêu cấp víp pro version 2.100
-                                </th>
-                                <td className="py-4 w-1/10 ">
-                                    <div className="w-full">
-                                        <img src={'https://greatsreview86.com/uploads/images/Videogen.jpg'} alt="ảnh sản phẩm" 
-                                        className='w-[70px] h-[70px] rounded-[5px] border-custom'/>
-                                    </div>
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize"}>
-                                        Có
-                                    </Button>
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    Videogen
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    1111
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    31-05-2025
-                                </td>
-                                <td className="py-4 w-1/10 text-center px-4">
-                                    <div className="flex items-start justify-start gap-3 m-auto">
-                                        <NavLink to={``}>
-                                            <Button className={"py-2! px-2! bg-blue-500  text-white"}>
-                                                <MdAutoFixHigh className='text-[18px]'/>
+                            {news && news?.length > 0 ? currentNews?.map((item, index) => (
+                                <tr 
+                                    key={item._id}
+                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 row-table"
+                                >
+                                    <td className="px-2 py-4 w-10 text-center">
+                                        <span className='text-base font-semibold'>{index + 1}</span>
+                                    </td>
+                                    <td className="px-2 py-4 w-10">
+                                        <input type="checkbox" className='scale-120'/>
+                                    </td>
+                                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-5/13">
+                                        {item.name}
+                                    </th>
+                                    <td className="py-4 w-1/10 ">
+                                        <div className="w-full">
+                                            <img src={'https://greatsreview86.com/uploads/images/Videogen.jpg'} alt="ảnh sản phẩm" 
+                                            className='w-[70px] h-[70px] rounded-[5px] border-custom'/>
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-4 w-1/11">
+                                        {
+                                            item.duyet === 'Yes' && 
+                                            <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize"}>
+                                                Có hiển thị
                                             </Button>
-                                        </NavLink>
-                                        <Button 
-                                        className={"py-2! px-2! bg-red-500 text-white"}>
-                                            <RiDeleteBin6Line className='text-[18px]'/>
-                                        </Button>
-                                    </div>
-                                </td>
-                            </tr>
+                                        }
+                                        {
+                                            item.duyet === 'No' && 
+                                            <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize"}>
+                                                Không hiển thị
+                                            </Button>
+                                        }
+                                    </td>
+                                    <td className="px-4 py-4 w-1/11">
+                                        {item.category?.tendanhmuc}
+                                    </td>
+                                    <td className="px-4 py-4 w-1/11">
+                                        {item.importDate}
+                                    </td>
+                                    <td className="py-4 w-1/10 text-center px-4">
+                                        <div className="flex items-start justify-start gap-3 m-auto">
+                                            <NavLink to={`/new/${item._id}`}>
+                                                <Button className={"py-2! px-2! bg-blue-500  text-white"}>
+                                                    <MdAutoFixHigh className='text-[18px]'/>
+                                                </Button>
+                                            </NavLink>
+                                            <Button 
+                                                className={"py-2! px-2! bg-red-500 text-white"}>
+                                                <RiDeleteBin6Line className='text-[18px]'/>
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )) : (
+                                <Empty/>
+                            )}
                         </tbody>
                     </table>
+                    {news && currentNews?.length > 0 ? (
+                        <PageBar 
+                            currentPage={current} 
+                            totalPage={Math.ceil(news?.length / limit)}
+                            onPageChange={setCurrent}
+                        />
+                    ): (<></>)}
                 </div>
             </div>
         </div>

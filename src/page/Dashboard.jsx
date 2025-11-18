@@ -61,7 +61,7 @@ const Dashboard = () => {
             dispatch(actions.deleteCategory(deleteItem)); 
         } else if (selectedIds.length > 0) {
             dispatch(actions.deleteManyCategory(selectedIds)); 
-            setDeleteItem([])
+            setSelectedIds([])
         }
     }
     const handleSearch = (value) => {

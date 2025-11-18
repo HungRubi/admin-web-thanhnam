@@ -20,3 +20,5 @@ export {default as StoreAdd} from './StoreAdd';
 export {default as StoreEdit} from './StoreEdit';
 export {default as OfferAdd} from './OfferAdd';
 export {default as OfferEdit} from './OfferEdit';
+export {default as DealAdd} from './DealAdd';
+export {default as DealEdit} from './DealEdit';

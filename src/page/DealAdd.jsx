@@ -5,16 +5,13 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 const { MdChevronRight } = icon;
-const StoreAdd = () => {
-    const eventData = [
-        { id: "Uncategorized", text: "Uncategorized" },
-        { id: "Black Friday", text: "Black Friday" },
-        { id: "Boxing Day", text: "Boxing Day" },
-        { id: "Christmas", text: "Christmas" },
-        { id: "Halloween", text: "Halloween" },
-        { id: "Thanksgiving", text: "Thanksgiving" },
-        { id: "Valentine", text: "Valentine" },
-    ];
+const DealAdd = () => {
+    const danhmucData = [
+        {
+            id: 'Deals',
+            text: 'Deals'
+        }
+    ]
     const duyetbatData = [
         {
             id: 'Yes',
@@ -45,27 +42,21 @@ const StoreAdd = () => {
         setFiles(files.filter((f) => f.id !== id));
     };
     const dispatch = useDispatch();
-    const {category, message, slugErr, tenstoreErr, danhmucErr} = useSelector(state => state.app)
-    useEffect(() => {
-        dispatch(actions.getCategory());
-    }, [dispatch])
+    const {message, slugErr, nameErr} = useSelector(state => state.app)
     const [formData, setFormData] = useState({
-        tenstore: '',
+        name: '',
         slug: '',
         danhmuc: '',
-        stt: '999',
-        event: 'Uncategorized',
+        originalPrice: '',
+        price: '',
+        url: '',
         image: '',
-        duyetbai: 'Yes',
-        motangan: '',
-        about: '',
-        howtoapply: '',
-        faqs: '',
+        duyet: '',
+        description: '',
         metatitle: '',
         metadescription: '',
         metakeywords: '',
     })
-    console.log(formData)
     const handleChange = (e, selected) => {
         setFormData({
             ...formData,
@@ -74,12 +65,12 @@ const StoreAdd = () => {
     }
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.addStore(formData))
+        dispatch(actions.addDeal(formData))
     }
     const navigate = useNavigate();
     useEffect(() => {
-        if(message === "Thêm cửa hàng thành công"){
-            navigate("/store")
+        if(message === "Thêm Deal thành công"){
+            navigate("/deal")
         }
     }, [message, navigate])
     return (
@@ -91,44 +82,46 @@ const StoreAdd = () => {
                             Home
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/'} className={"text-blue-600"}>
-                            Danh mục
+                        <NavLink to={'/deal'} className={"text-blue-600"}>
+                            Deal
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/category-add'} className={"text-blue-600"}>
-                            Thêm mới store
+                        <NavLink to={'/deal/add'} className={"text-blue-600"}>
+                            Thêm mới deal
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Thêm mới store</h2>
+                    <h2 className="text-[35px] font-semibold">Thêm mới deal</h2>
                 </div>
             </div>
             <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
                 <div className="w-full flex border-b-custom py-10">
                     <div className="w-2/6 ">
                         <h5 className="text-[20px] font-medium text-black text-color mt-5">
-                            Thông tin store
+                            Thông tin deal
                         </h5>
                         <p className="text-[12px] text-[#888] line-clamp-2">
-                            Thông tin chi tiết về store
+                            Thông tin chi tiết về deal
                         </p>
                     </div>
                     <div className="flex-1">
                         <Input 
-                            label={"Tên store"} 
-                            name={"tenstore"}
+                            label={"Tên deal"}
+                            placeholder={"Tên deal"} 
+                            name={"name"}
                             onChange={handleChange}
-                            value={formData?.tenstore}
+                            value={formData?.name}
                         />
                         {
-                            tenstoreErr && 
+                            nameErr && 
                             <p className="text-red-500 text-[11px] mt-1">
-                                {tenstoreErr}
+                                {nameErr}
                             </p>
                         }
                         
                         <Input 
                             label={"Slug"} 
                             name={"slug"}
+                            placeholder={"Slug"}
                             onChange={handleChange}
                             value={formData?.slug}
                         />
@@ -138,34 +131,36 @@ const StoreAdd = () => {
                                 {slugErr}
                             </p>
                         }
-                        <Input 
-                            label={"Thứ tự"} 
-                            type={"number"}
-                            name={"stt"}
-                            onChange={handleChange}
-                            value={formData?.stt}
-                        />
                         <div className="mt-5"></div>
                         <Combobox
                             label={"Danh mục"}
                             name={"danhmuc"}
-                            data={category}
+                            data={danhmucData}
                             onChange={handleChange}
                             selected={formData?.danhmuc}
                         />
-                        {
-                            danhmucErr && 
-                            <p className="text-red-500 text-[11px] mt-1">
-                                {danhmucErr}
-                            </p>
-                        }
-                        <div className="mt-5"></div>
-                        <Combobox
-                            label={"Events"}
-                            name={"event"}
-                            data={eventData}
+                        <Input 
+                            label={"Original Price"}
+                            type={"number"} 
+                            name={"originalPrice"}
+                            placeholder={"Original Price"}
                             onChange={handleChange}
-                            selected={formData?.event}
+                            value={formData?.originalPrice}
+                        />
+                        <Input 
+                            label={"Price"} 
+                            type={"number"} 
+                            name={"price"}
+                            placeholder={"Price"}
+                            onChange={handleChange}
+                            value={formData?.price}
+                        />
+                        <Input 
+                            label={"Url"} 
+                            name={"url"}
+                            placeholder={"url"}
+                            onChange={handleChange}
+                            value={formData?.url}
                         />
                         <div>
                             <h1 className="block text-[16px] font-medium text-gray-800 mt-5 mb-2.5">Avatar</h1>
@@ -243,27 +238,6 @@ const StoreAdd = () => {
                             onChange={handleChange}
                             children={formData?.motangan}
                         />
-                        <Textarea
-                            label={"About store"}
-                            name={"about"}
-                            row={5}
-                            onChange={handleChange}
-                            children={formData?.about}
-                        />
-                        <Textarea
-                            label={"About store"}
-                            name={"howtoapply"}
-                            row={5}
-                            onChange={handleChange}
-                            children={formData?.howtoapply}
-                        />
-                        <Textarea
-                            label={"FAQS"}
-                            name={"faqs"}
-                            row={5}
-                            onChange={handleChange}
-                            children={formData?.faqs}
-                        />
                         <Input 
                             label={"Meta title"} 
                             name={"metatitle"}
@@ -302,4 +276,4 @@ const StoreAdd = () => {
     )
 }
 
-export default StoreAdd
+export default DealAdd

@@ -139,7 +139,6 @@ export const updateStore = (id, data) => async (dispatch) => {
 export const filterStore = (filter) => async (dispatch)  => {
     try{
         const response = await apis.filterStore(filter);
-        console.log(response.data)
         if(response.status === 200) {
             dispatch({
                 type: actionTypes.FILTER_STORE,

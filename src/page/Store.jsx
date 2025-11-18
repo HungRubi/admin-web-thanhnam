@@ -23,10 +23,10 @@ const Store = () => {
         dispatch(actions.getCategory());
     }, [dispatch])
     const [current, setCurrent] = useState(1);
-        const limit = 10;
-        const lastIndex = current * limit;
-        const firstIndex = lastIndex - limit;
-        const currentStore = store?.slice(firstIndex, lastIndex);
+    const limit = 10;
+    const lastIndex = current * limit;
+    const firstIndex = lastIndex - limit;
+    const currentStore = store?.slice(firstIndex, lastIndex);
 
     const [deleteItem, setDeleteItem] = useState();
     const [isModal, setIsModal] = useState(false);
