@@ -24,7 +24,7 @@ const Combobox = ({ data, label, name, selected, onChange, className, isLable })
                 <option value="">--- Choice ---</option>
                 {data?.map((item, index) => (
                     <option key={index} value={(item.id || item._id)?.toString()}>
-                        {item.text || item.tendanhmuc || item.name || item.title} 
+                        {item.text || item.tendanhmuc || item.name || item.title || item.tenstore} 
                     </option>
                 ))}
             </select>

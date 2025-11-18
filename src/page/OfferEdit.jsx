@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Input, Button, Combobox, Textarea } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 const { MdChevronRight } = icon;
-const OfferAdd = () => {
+const OfferEdit = () => {
+    const {id} = useParams();
     const status = [
         {
             id: 'Yes',
@@ -17,10 +18,11 @@ const OfferAdd = () => {
         }
     ]
     const dispatch = useDispatch();
-    const {store, message, nameOffer, storeEmpty,codeEmpty} = useSelector(state => state.app)
+    const {store, message, nameOffer, storeEmpty,codeEmpty, offerEdit} = useSelector(state => state.app)
     useEffect(() => {
+        dispatch(actions.getOfferEdit(id));
         dispatch(actions.getStore());
-    }, [dispatch])
+    }, [dispatch, id])
     const [formData, setFormData] = useState({
         name: '',
         offer: '',
@@ -28,9 +30,23 @@ const OfferAdd = () => {
         url: '',
         store: '',
         description: '',
-        verified: '',
-        duyet: '',
+        verified: 'Yes',
+        duyet: 'Yes',
     })
+    useEffect(() => {
+        if(offerEdit) {
+            setFormData({
+                name: offerEdit?.name || '',
+                offer: offerEdit?.offer || '',
+                code: offerEdit?.code || '',
+                url: offerEdit?.url || '',
+                store: offerEdit?.store || '',
+                description: offerEdit?.description || '',
+                verified: offerEdit?.verified || 'Yes',
+                duyet: offerEdit?.duyet || 'Yes',
+            })
+        }
+    }, [offerEdit])
     const handleChange = (e, selected) => {
         setFormData({
             ...formData,
@@ -39,11 +55,11 @@ const OfferAdd = () => {
     }
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.addOffer(formData))
+        dispatch(actions.updateOffer(id, formData))
     }
     const navigate = useNavigate();
     useEffect(() => {
-        if(message === "Thêm offer thành công"){
+        if(message === "Cập nhật cửa hàng thành công :))"){
             navigate("/offer")
         }
     }, [message, navigate])
@@ -60,11 +76,11 @@ const OfferAdd = () => {
                             Offer
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/offer/add'} className={"text-blue-600"}>
-                            Thêm mới offer
+                        <NavLink to={`/offer/${id}`} className={"text-blue-600"}>
+                            Update offer
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Thêm mới offer</h2>
+                    <h2 className="text-[35px] font-semibold">Update offer</h2>
                 </div>
             </div>
             <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
@@ -172,4 +188,4 @@ const OfferAdd = () => {
     )
 }
 
-export default OfferAdd
+export default OfferEdit

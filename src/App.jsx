@@ -10,7 +10,7 @@ import {
   Public, Offer, Deal, PageContent, User, CategoryAdd,
   Dashboard, Store, New, Widget, Menu, ContentConfig,
   GlobalConfig, AuthorConfig, SocialConfig, SeoConfig,
-  CategoryEdit, StoreAdd, StoreEdit, OfferAdd
+  CategoryEdit, StoreAdd, StoreEdit, OfferAdd, OfferEdit
 } from './page';
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
             <Route path="/store/:id" element={<StoreEdit />} />
             <Route path="/offer" element={<Offer />} />
             <Route path="/offer/add" element={<OfferAdd />} />
+            <Route path="/offer/:id" element={<OfferEdit />} />
             <Route path="/deal" element={<Deal />} />
             <Route path="/new" element={<New />} />
             <Route path="/page-content" element={<PageContent />} />

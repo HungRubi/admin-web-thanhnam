@@ -12,6 +12,9 @@ const initState = {
     storeEdit: {},
     tenstoreErr: null,
     slugStoreErr: null,
+
+    offer: [],
+    offerEdit: {},
 }
 
 const appReducer = (state = initState, action) => {
@@ -115,7 +118,7 @@ const appReducer = (state = initState, action) => {
                 store: action.payload.storeFormat || []
             }
 
-         case actionType.GET_STORE_EDIT:
+        case actionType.GET_STORE_EDIT:
             return {
                 ...state,
                 storeEdit: action.payload.data.store || {},
@@ -139,10 +142,74 @@ const appReducer = (state = initState, action) => {
                 ...state,
                 store: action.payload.stores || [],
             }
+
         case actionType.FILTER_STORE_ERR:
             return {
                 ...state,
                 message: "lỗi server vui lòng thử lại sau"
+            }
+
+        /** OFFER */
+        case actionType.ADD_OFFER:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_OFFER_ERR:
+            return {
+                ...state,
+                nameOffer: action.payload.nameEmpty,
+                storeEmpty: action.payload.storeEmpty,
+                codeEmpty: action.payload.codeEmpty,
+            }
+
+        case actionType.GET_OFFER:
+            return {
+                ...state,
+                offer: action.payload.search 
+                ? action.payload.data.data.searchOffer || [] 
+                : action.payload.data.data.offerFormat || [],
+            }
+
+        case actionType.GET_OFFER_EDIT:
+            return {
+                ...state,
+                offerEdit: action.payload.data.offer || {},
+            }
+        
+        case actionType.UPDATE_OFFER:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.UPDATE_OFFER_ERR:
+            return {
+                ...state,
+                nameOffer: action.payload.nameEmpty,
+                storeEmpty: action.payload.storeEmpty,
+                codeEmpty: action.payload.codeEmpty,
+            }
+
+        case actionType.DELETE_OFFER:
+            return {
+                ...state,
+                message: action.payload.message,
+                offer: action.payload.offerFormat || []
+            }
+
+        case actionType.DELETE_MANY_OFFER:
+            return {
+                ...state,
+                message: action.payload.message,
+                offer: action.payload.offerFormat || []
+            }
+
+         case actionType.FILTER_OFFER:
+            return {
+                ...state,
+                offer: action.payload.offer || [],
             }
 
         default:

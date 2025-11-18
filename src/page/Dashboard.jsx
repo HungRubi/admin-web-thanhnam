@@ -34,18 +34,12 @@ const Dashboard = () => {
     const lastIndex = current * limit;
     const firstIndex = lastIndex - limit;
     const currentCategory = category?.slice(firstIndex, lastIndex);
+
+    
     const [isModal, setIsModal] = useState(false);
     const [deleteItem, setDeleteItem] = useState();
-    
-
-    useEffect(() => {
-        const totalPage = Math.ceil(category?.length / limit);
-        if (current > totalPage && totalPage > 0) {
-            setCurrent(totalPage);
-        }
-    }, [category, current]);
-    
     const [selectedIds, setSelectedIds] = useState([]);
+    
     const handleCheckItem = (id) => {
         setSelectedIds(prev => {
             if (prev.includes(id)) {

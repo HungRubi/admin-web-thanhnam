@@ -19,3 +19,4 @@ export {default as CategoryAdd} from './CategoryAdd';
 export {default as StoreAdd} from './StoreAdd';
 export {default as StoreEdit} from './StoreEdit';
 export {default as OfferAdd} from './OfferAdd';
+export {default as OfferEdit} from './OfferEdit';
