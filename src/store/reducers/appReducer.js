@@ -21,6 +21,9 @@ const initState = {
 
     news: [],
     newEdit: {},
+
+    contents: [],
+    contentEdit: {}
 }
 
 const appReducer = (state = initState, action) => {
@@ -340,6 +343,61 @@ const appReducer = (state = initState, action) => {
             return {
                 ...state,
                 news: action.payload.newsList || [],
+            }
+
+        /** PAGE-CONTENT */
+        case actionType.GET_CONTENT:
+            return {
+                ...state,
+                contents: action.payload.search 
+                ? action.payload.data.data.searchContent || [] 
+                : action.payload.data.data.contentFormat || [],
+            }
+
+        case actionType.ADD_CONTENT:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_CONTENT_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+            }
+
+        case actionType.GET_CONTENT_EDIT:
+            return {
+                ...state,
+                contentEdit: action.payload.data.content || {},
+            }
+
+        case actionType.UPDATE_CONTENT:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        case actionType.UPDATE_CONTENT_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+            }
+
+        case actionType.DELETE_CONTENT:
+            return {
+                ...state,
+                message: action.payload.message,
+                contents: action.payload.contentFormat || []
+            }
+
+        case actionType.DELETE_MANY_CONTENT:
+            return {
+                ...state,
+                message: action.payload.message,
+                contents: action.payload.contentFormat || []
             }
 
         default:

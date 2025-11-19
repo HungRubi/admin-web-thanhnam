@@ -5,10 +5,6 @@ const { MdChevronRight, MdAutoFixHigh, IoMdAdd, RiDeleteBin6Line, IoMdRefresh} =
 const Widget = () => {
     const status = [
         {
-            id: 'tất cả vị trí',
-            name: 'Tất cả vị trí',
-        },
-        {
             id: 'home page',
             name: 'Home Page',
         }

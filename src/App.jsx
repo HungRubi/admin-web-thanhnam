@@ -11,7 +11,7 @@ import {
   Dashboard, Store, New, Widget, Menu, ContentConfig,
   GlobalConfig, AuthorConfig, SocialConfig, SeoConfig,
   CategoryEdit, StoreAdd, StoreEdit, OfferAdd, OfferEdit,
-  DealAdd, DealEdit, NewAdd, NewEdit
+  DealAdd, DealEdit, NewAdd, NewEdit, PageContentAdd, PageContentEdit
 
 } from './page';
 
@@ -43,6 +43,8 @@ function App() {
             <Route path="/new/add" element={<NewAdd />} />
             <Route path="/new/:id" element={<NewEdit />} />
             <Route path="/page-content" element={<PageContent />} />
+            <Route path="/page-content/add" element={<PageContentAdd />} />
+            <Route path="/page-content/:id" element={<PageContentEdit />} />
             <Route path="/widget" element={<Widget />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/user" element={<User />} />
