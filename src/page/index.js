@@ -28,3 +28,7 @@ export {default as PageContentAdd} from './PageContentAdd';
 export {default as PageContentEdit} from './PageContentEdit';
 export {default as WidgetAdd} from './WidgetAdd';
 export {default as WidgetEdit} from './WidgetEdit';
+export {default as UserAdd} from './UserAdd';
+export {default as UserEdit} from './UserEdit';
+export {default as MenuAdd} from './MenuAdd';
+export {default as MenuEdit} from './MenuEdit';

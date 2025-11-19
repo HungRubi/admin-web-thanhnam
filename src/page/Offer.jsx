@@ -24,10 +24,10 @@ const Offer = () => {
     }, [dispatch])
 
     const [current, setCurrent] = useState(1);
-        const limit = 10;
-        const lastIndex = current * limit;
-        const firstIndex = lastIndex - limit;
-        const currentOffer = offer?.slice(firstIndex, lastIndex);
+    const limit = 10;
+    const lastIndex = current * limit;
+    const firstIndex = lastIndex - limit;
+    const currentOffer = offer?.slice(firstIndex, lastIndex);
 
     const handleSearch = (value) => {
         dispatch(actions.getOffer(value))

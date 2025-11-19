@@ -12,7 +12,10 @@ import {
   GlobalConfig, AuthorConfig, SocialConfig, SeoConfig,
   CategoryEdit, StoreAdd, StoreEdit, OfferAdd, OfferEdit,
   DealAdd, DealEdit, NewAdd, NewEdit, PageContentAdd, PageContentEdit,
-  WidgetAdd, WidgetEdit
+  WidgetAdd, WidgetEdit,UserAdd,
+  UserEdit,
+  MenuAdd,
+  MenuEdit
 
 } from './page';
 
@@ -50,7 +53,11 @@ function App() {
             <Route path="/widget/:id" element={<WidgetEdit />} />
             <Route path="/widget" element={<Widget />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/menu/add" element={<MenuAdd />} />
+            <Route path="/menu/:id" element={<MenuEdit />} />
             <Route path="/user" element={<User />} />
+            <Route path="/user/add" element={<UserAdd />} />
+            <Route path="/user/:id" element={<UserEdit />} />
             <Route path="/global-config" element={<GlobalConfig />} />
             <Route path="/author-config" element={<AuthorConfig />} />
             <Route path="/social-config" element={<SocialConfig />} />

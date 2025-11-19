@@ -1,9 +1,9 @@
 import axios from "../axios";
 
-export const getUser = async (search='') => {
+export const getMenu = async (search='') => {
     try {
         const response = await axios({
-            url: `/user?timkiem=${search}`,
+            url: `/menu?timkiem=${search}`,
             method: 'GET',
         });
         return response; 
@@ -18,11 +18,11 @@ export const getUser = async (search='') => {
     }
 };
 
-export const addUser = async (data) => {
+export const addMenu = async (data) => {
     try{
         const response = await axios({
             method: "POST",
-            url: "/user",
+            url: "/menu",
             data: data
         })
         return response;
@@ -37,50 +37,12 @@ export const addUser = async (data) => {
     }
 }
 
-export const deleteUser = async (id) => {
-    try{
-        const response = await axios({
-            method: "DELETE",
-            url: `/user/${id}`
-        })
-        return response;
-    }catch(error) {
-        if(error.response) {
-            return error.response
-        }
-        return {
-            status: 500,
-            message: "Lỗi server vui lòng thử lại sau"
-        }
-    }
-}
-
-export const deleteManyUser = async (data) => {
-    try{
-        const response = await axios({
-            method: "DELETE",
-            url: `/user/delete-many`,
-            data: data
-        })
-        return response;
-    }catch(error) {
-        if(error.response) {
-            return error.response
-        }
-        return {
-            status: 500,
-            message: "Lỗi server vui lòng thử lại sau"
-        }
-    }
-}
-
-export const getUserEdit = async (id) => {
+export const getMenuEdit = async (id) => {
     try {
         const response = await axios({
-            url: `/user/${id}`,
+            url: `/menu/${id}`,
             method: 'GET',
         });
-        console.log(response);
         return response; 
     } catch (error) {
         if(error.response){
@@ -93,11 +55,49 @@ export const getUserEdit = async (id) => {
     }
 };
 
-export const updateUser = async (id, data) => {
+export const updateMenu = async (id, data) => {
     try{
         const response = await axios({
             method: "PUT",
-            url: `/user/${id}`,
+            url: `/menu/${id}`,
+            data: data
+        })
+        console.log(response)
+        return response;
+    }catch(error) {
+        if(error.response) {
+            return error.response
+        }
+        return {
+            status: 500,
+            message: "Lỗi server vui lòng thử lại sau"
+        }
+    }
+}
+
+export const deleteMenu = async (id) => {
+    try{
+        const response = await axios({
+            method: "DELETE",
+            url: `/menu/${id}`
+        })
+        return response;
+    }catch(error) {
+        if(error.response) {
+            return error.response
+        }
+        return {
+            status: 500,
+            message: "Lỗi server vui lòng thử lại sau"
+        }
+    }
+}
+
+export const deleteManyMenu = async (data) => {
+    try{
+        const response = await axios({
+            method: "DELETE",
+            url: `/menu/delete-many`,
             data: data
         })
         return response;
@@ -109,5 +109,27 @@ export const updateUser = async (id, data) => {
             status: 500,
             message: "Lỗi server vui lòng thử lại sau"
         }
+    }
+}
+
+export const filterMenu = async (filters) => {
+    try{
+        const params = new URLSearchParams();
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value) params.append(key, value); 
+        });
+        const response = await axios({
+            url: `/menu/filter?${params.toString()}`,
+            method: 'GET',
+        })
+        return response;
+    }catch(error){
+        if (error.response) {
+            return error.response;
+        }
+        return {
+            status: 500,
+            message: "Có lỗi xảy ra, vui lòng thử lại sau"
+        };
     }
 }

@@ -27,6 +27,12 @@ const initState = {
 
     widgets: [],
     widgetEdit: {},
+
+    users: [],
+    userEdit: {},
+
+    menus: [],
+    menuEdit: {},
 }
 
 const appReducer = (state = initState, action) => {
@@ -455,6 +461,130 @@ const appReducer = (state = initState, action) => {
                 ...state,
                 message: action.payload.message,
                 widgets: action.payload.widgetFormat || []
+            }
+
+        /** USER */
+        case actionType.GET_USER:
+            return {
+                ...state,
+                users: action.payload.search 
+                ? action.payload.data.data.searchUser || [] 
+                : action.payload.data.data.userFormat || [],
+            }
+
+        case actionType.ADD_USER:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_USER_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                accountErr: action.payload.accountErr,
+                emailErr: action.payload.emailErr,
+                passwordErr: action.payload.passwordErr,
+            }
+
+        case actionType.GET_USER_EDIT:
+            return {
+                ...state,
+                userEdit: action.payload.user || {},
+            }
+
+        case actionType.UPDATE_USER:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        case actionType.UPDATE_USER_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                accountErr: action.payload.accountErr,
+                emailErr: action.payload.emailErr,
+                passwordErr: action.payload.passwordErr,
+            }
+
+        case actionType.DELETE_USER:
+            return {
+                ...state,
+                message: action.payload.message,
+                users: action.payload.users || []
+            }
+
+        case actionType.DELETE_MANY_USER:
+            return {
+                ...state,
+                message: action.payload.message,
+                users: action.payload.users || []
+            }
+
+        /** MENU */
+        case actionType.GET_MENU:
+            return {
+                ...state,
+                menus: action.payload.search 
+                ? action.payload.data.data.searchMenu || [] 
+                : action.payload.data.data.menuFormat || [],
+            }
+
+        case actionType.ADD_MENU:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_MENU_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                pageErr: action.payload.pageErr,
+                danhmucErr: action.payload.danhmucErr,
+                danhmucchaErr: action.payload.danhmucchaErr
+            }
+
+        case actionType.GET_MENU_EDIT:
+            return {
+                ...state,
+                menuEdit: action.payload.data.menu || {},
+            }
+
+        case actionType.UPDATE_MENU:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        case actionType.UPDATE_MENU_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                pageErr: action.payload.pageErr,
+                danhmucErr: action.payload.danhmucErr,
+                danhmucchaErr: action.payload.danhmucchaErr
+            }
+
+        case actionType.DELETE_MENU:
+            return {
+                ...state,
+                message: action.payload.message,
+                menus: action.payload.menuFormat || []
+            }
+        
+        case actionType.DELETE_MANY_MENU:
+            return {
+                ...state,
+                message: action.payload.message,
+                menus: action.payload.menuFormat || []
+            }
+
+        case actionType.FILTER_MENU:
+            return {
+                ...state,
+                menus: action.payload.menus || [],
             }
 
         default:
