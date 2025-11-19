@@ -24,12 +24,66 @@ const New = () => {
     }, [dispatch])
 
     const [current, setCurrent] = useState(1);
-        const limit = 10;
-        const lastIndex = current * limit;
-        const firstIndex = lastIndex - limit;
-        const currentNews = news?.slice(firstIndex, lastIndex);
+    const limit = 10;
+    const lastIndex = current * limit;
+    const firstIndex = lastIndex - limit;
+    const currentNews = news?.slice(firstIndex, lastIndex);
+    const handleSearch = (value) => {
+        dispatch(actions.getNews(value))
+    }
+
+
+    const [isModal, setIsModal] = useState(false);
+    const [deleteItem, setDeleteItem] = useState();
+    const [selectedIds, setSelectedIds] = useState([]);
+        
+    const handleCheckItem = (id) => {
+        setSelectedIds(prev => {
+            if (prev.includes(id)) {
+                return prev.filter(item => item !== id);
+            } else {
+                return [...prev, id]; 
+            }
+        });
+    }
+    const handleCheckAll = () => {
+        if (selectedIds.length === currentNews?.length) {
+            setSelectedIds([]); 
+        } else {
+            setSelectedIds(currentNews?.map(item => item._id));
+        }
+    }
+    const handleDelete = () => {
+        if (deleteItem) {
+            dispatch(actions.deleteNew(deleteItem)); 
+        } else if (selectedIds.length > 0) {
+            dispatch(actions.deleteManyNew(selectedIds)); 
+            setSelectedIds([])
+        }
+    }
+
+    const [filters, setFilters] = useState({ categoryId: "", duyet: "" });
+        
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        const updated = { ...filters, [name]: value };
+        setFilters(updated);
+
+        const cleanFilter = {};
+        if (updated.categoryId) cleanFilter.categoryId = updated.categoryId;
+        if (updated.duyet) cleanFilter.duyet = updated.duyet;
+
+        if (Object.keys(cleanFilter).length === 0) {
+            dispatch(actions.getNews());
+        } else {
+            dispatch(actions.filterNew(cleanFilter));
+        }
+    };
+
     return (
         <div className="full pt-5">
+            {isModal && <ModelToast isOpen={isModal} setIsOpen={setIsModal} onDelete={handleDelete}/>}
             <div className="w-full px-[30px] flex gap-8">
                 <div className="w-full">
                     <div className="flex items-center gap-2 text-[15px] text-color">
@@ -47,13 +101,19 @@ const New = () => {
             <div className="w-full bg-white border-t-custom px-[30px] mt-8">
                 <div className="flex items-center gap-5 mt-5 justify-between ">
                     <div className="w-3/5 flex items-center gap-5">
-                        <Search className={"rounded-lg!"}  placeholder={"Enter product name..."}/>
+                        <Search 
+                            className={"rounded-lg!"}  
+                            placeholder={"Nhập tên tin tức..."}
+                            onSearch={handleSearch}
+                        />
                         <select 
                             className={`w-1/3 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 
                                 focus:border-blue-500 block py-1.5 px-2.5 dark:bg-gray-700 
                                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                 dark:focus:ring-blue-500 dark:focus:border-blue-500 `} 
                             aria-label="Default select example"
+                            onChange={handleChange}
+                            name='categoryId'
                         >
                             <option value="">--- Danh mục store ---</option>
                             {category?.map((item, index) => (
@@ -66,6 +126,8 @@ const New = () => {
                                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                 dark:focus:ring-blue-500 dark:focus:border-blue-500 `} 
                             aria-label="Default select example"
+                            onChange={handleChange}
+                            name='duyet'
                         >
                             <option value="">--- Trạng thái ---</option>
                             {status?.map((item, index) => (
@@ -82,11 +144,21 @@ const New = () => {
                                 Thêm mới
                             </Button>
                         </NavLink>
-                        <Button className={"gap-2.5 py-1.5! border-none! bg-red-500 text-white hover:bg-red-600 text-sm"}>
+                        <Button 
+                            className={"gap-2.5 py-1.5! border-none! bg-red-500 text-white hover:bg-red-600 text-sm"}
+                            onClick={() => {
+                                setIsModal(true)
+                            }}
+                        >
                             <RiDeleteBin6Line className='text-white text-base'/>
-                            Xóa 0
+                             Xóa ({selectedIds.length})
                         </Button>
-                        <Button className={"gap-2.5 py-1.5! border-none! bg-gray-500 text-white hover:bg-gray-600 text-sm"}>
+                        <Button 
+                            className={"gap-2.5 py-1.5! border-none! bg-gray-500 text-white hover:bg-gray-600 text-sm"}
+                            onClick={() => {
+                                setSelectedIds([]);
+                            }}
+                        >
                             <IoMdRefresh className='text-white text-base'/>
                             Cancel
                         </Button>
@@ -98,7 +170,12 @@ const New = () => {
                             <tr>
                                 <th scope="col" className="px-2 py-3"></th>
                                 <th scope="col" className="px-2 py-3">
-                                    <input type="checkbox" className='scale-120'/>
+                                    <input 
+                                        type="checkbox" 
+                                        className='scale-120'
+                                        checked={selectedIds?.length === currentNews?.length && currentNews?.length > 0}
+                                        onChange={handleCheckAll}
+                                    />
                                 </th>
                                 <th scope="col" className="px-4 py-3">
                                     Name
@@ -130,18 +207,23 @@ const New = () => {
                                         <span className='text-base font-semibold'>{index + 1}</span>
                                     </td>
                                     <td className="px-2 py-4 w-10">
-                                        <input type="checkbox" className='scale-120'/>
+                                        <input 
+                                            type="checkbox" 
+                                            className='scale-120'
+                                            checked={selectedIds.includes(item._id)}
+                                            onChange={() => handleCheckItem(item._id)}
+                                        />
                                     </td>
-                                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-5/13">
+                                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-1/3">
                                         {item.name}
                                     </th>
-                                    <td className="py-4 w-1/10 ">
+                                    <td className="py-4 w-1/8 ">
                                         <div className="w-full">
                                             <img src={'https://greatsreview86.com/uploads/images/Videogen.jpg'} alt="ảnh sản phẩm" 
                                             className='w-[70px] h-[70px] rounded-[5px] border-custom'/>
                                         </div>
                                     </td>
-                                    <td className="px-4 py-4 w-1/11">
+                                    <td className="px-4 py-4 w-1/10">
                                         {
                                             item.duyet === 'Yes' && 
                                             <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize"}>
@@ -155,11 +237,11 @@ const New = () => {
                                             </Button>
                                         }
                                     </td>
-                                    <td className="px-4 py-4 w-1/11">
+                                    <td className="px-4 py-4 w-2/10">
                                         {item.category?.tendanhmuc}
                                     </td>
-                                    <td className="px-4 py-4 w-1/11">
-                                        {item.importDate}
+                                    <td className="px-4 py-4 w-1/10">
+                                        {item.formatDate}
                                     </td>
                                     <td className="py-4 w-1/10 text-center px-4">
                                         <div className="flex items-start justify-start gap-3 m-auto">
@@ -169,7 +251,12 @@ const New = () => {
                                                 </Button>
                                             </NavLink>
                                             <Button 
-                                                className={"py-2! px-2! bg-red-500 text-white"}>
+                                                className={"py-2! px-2! bg-red-500 text-white"}
+                                                onClick={() => {
+                                                    setDeleteItem(item._id);
+                                                    setIsModal(true);
+                                                }}
+                                            >
                                                 <RiDeleteBin6Line className='text-[18px]'/>
                                             </Button>
                                         </div>

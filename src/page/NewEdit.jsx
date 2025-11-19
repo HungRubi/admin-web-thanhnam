@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Input, Button, Combobox, Textarea } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 const { MdChevronRight } = icon;
-const NewAdd = () => {
+const NewEdit = () => {
+    const {id} = useParams();
     const duyetbatData = [
         {
             id: 'Yes',
@@ -36,10 +37,11 @@ const NewAdd = () => {
         setFiles(files.filter((f) => f.id !== id));
     };
     const dispatch = useDispatch();
-    const {message, slugErr, nameErr, category, categoryErr} = useSelector(state => state.app)
+    const {message, slugErr, nameErr, category, categoryErr, newEdit} = useSelector(state => state.app)
     useEffect(() => {
         dispatch(actions.getCategory())
-    }, [dispatch])
+        dispatch(actions.getNewEdit(id));
+    }, [dispatch, id])
     const [formData, setFormData] = useState({
         name: '',
         slug: '',
@@ -52,6 +54,22 @@ const NewAdd = () => {
         metadescription: '',
         metakeywords: '',
     })
+    useEffect(() => {
+        if(newEdit) {
+            setFormData({
+                name: newEdit?.name || '',
+                slug: newEdit?.slug || '',
+                category: newEdit?.category || '',
+                image: newEdit?.image || '',
+                duyet: newEdit?.duyet || '',
+                description: newEdit?.description || '',
+                content: newEdit?.content || '',
+                metatitle: newEdit?.metatitle || '',
+                metadescription: newEdit?.metadescription || '',
+                metakeywords: newEdit?.metakeywords || '',
+            })
+        }
+    }, [newEdit])
     const handleChange = (e, selected) => {
         setFormData({
             ...formData,
@@ -60,11 +78,11 @@ const NewAdd = () => {
     }
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.addNew(formData))
+        dispatch(actions.updateNew(id, formData))
     }
     const navigate = useNavigate();
     useEffect(() => {
-        if(message === "Thêm tin tức thành công"){
+        if(message === "Cập nhật tin tức thành công!"){
             navigate("/new")
         }
     }, [message, navigate])
@@ -81,11 +99,11 @@ const NewAdd = () => {
                             New
                         </NavLink>
                         <MdChevronRight/>
-                        <NavLink to={'/new/add'} className={"text-blue-600"}>
-                            Thêm mới tin tức
+                        <NavLink to={`/new/${id}`} className={"text-blue-600"}>
+                            Update tin tức
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Thêm mới new</h2>
+                    <h2 className="text-[35px] font-semibold">Update tin tức</h2>
                 </div>
             </div>
             <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
@@ -264,4 +282,4 @@ const NewAdd = () => {
     )
 }
 
-export default NewAdd
+export default NewEdit

@@ -70,16 +70,19 @@ const Deal = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        const newFilters = { ...filters, [name]: value };
-        setFilters(newFilters);
+        const updated = { ...filters, [name]: value };
+        setFilters(updated);
 
-        if (!newFilters.danhmuc && !newFilters.duyet) {
-            dispatch(actions.filterDeal());
+        const cleanFilter = {};
+        if (updated.danhmuc) cleanFilter.danhmuc = updated.danhmuc;
+        if (updated.duyet) cleanFilter.duyet = updated.duyet;
+
+        if (Object.keys(cleanFilter).length === 0) {
+            dispatch(actions.getDeal());
         } else {
-            dispatch(actions.filterDeal(newFilters));
+            dispatch(actions.filterDeal(cleanFilter));
         }
     };
-    console
     return (
         <div className="full pt-5">
             {isModal && <ModelToast isOpen={isModal} setIsOpen={setIsModal} onDelete={handleDelete}/>}

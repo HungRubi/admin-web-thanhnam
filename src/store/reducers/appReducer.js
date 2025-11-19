@@ -20,6 +20,7 @@ const initState = {
     dealEdit: {},
 
     news: [],
+    newEdit: {},
 }
 
 const appReducer = (state = initState, action) => {
@@ -285,6 +286,60 @@ const appReducer = (state = initState, action) => {
                 news: action.payload.search 
                 ? action.payload.data.data.searchNew || [] 
                 : action.payload.data.data.newFormat || [],
+            }
+
+        case actionType.ADD_NEW:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_NEW_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+                categoryErr: action.payload.categoryErr
+            }
+
+        case actionType.GET_NEW_EDIT:
+            return {
+                ...state,
+                newEdit: action.payload.data.news || {},
+            }
+
+        case actionType.UPDATE_NEW:
+            return {
+                ...state,
+                message: action.payload.message || {},
+            }
+
+        case actionType.UPDATE_NEW_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+                categoryErr: action.payload.categoryErr
+            }
+
+        case actionType.DELETE_NEW:
+            return {
+                ...state,
+                message: action.payload.message,
+                news: action.payload.newFormat || []
+            }
+
+        case actionType.DELETE_MANY_NEW:
+            return {
+                ...state,
+                message: action.payload.message,
+                news: action.payload.newFormat || []
+            }
+        
+        case actionType.FILTER_NEW:
+            return {
+                ...state,
+                news: action.payload.newsList || [],
             }
 
         default:
