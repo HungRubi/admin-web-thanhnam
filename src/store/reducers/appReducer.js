@@ -23,7 +23,10 @@ const initState = {
     newEdit: {},
 
     contents: [],
-    contentEdit: {}
+    contentEdit: {},
+
+    widgets: [],
+    widgetEdit: {},
 }
 
 const appReducer = (state = initState, action) => {
@@ -398,6 +401,60 @@ const appReducer = (state = initState, action) => {
                 ...state,
                 message: action.payload.message,
                 contents: action.payload.contentFormat || []
+            }
+
+        /** WIDGET */
+        case actionType.GET_WIDGET:
+            return {
+                ...state,
+                widgets: action.payload.search 
+                ? action.payload.data.data.searchWidget || [] 
+                : action.payload.data.data.widgetFormat || [],
+            }
+
+        case actionType.ADD_WIDGET:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_WIDGET_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+            }
+
+        case actionType.GET_WIDGET_EDIT:
+            return {
+                ...state,
+                widgetEdit: action.payload.data.content || {},
+            }
+
+        case actionType.UPDATE_WIDGET:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        case actionType.UPDATE_WIDGET_ERR:
+            return {
+                ...state,
+                nameErr: action.payload.nameErr,
+                slugErr: action.payload.slugErr,
+            }
+
+        case actionType.DELETE_WIDGET:
+            return {
+                ...state,
+                message: action.payload.message,
+                widgets: action.payload.widgetFormat || []
+            }
+
+        case actionType.DELETE_MANY_WIDGET:
+            return {
+                ...state,
+                message: action.payload.message,
+                widgets: action.payload.widgetFormat || []
             }
 
         default:

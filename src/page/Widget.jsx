@@ -1,6 +1,9 @@
-import  { Search, Button, CircleButton } from '../components';
+import  { Search, Button, CircleButton, PageBar, ModelToast, Empty } from '../components';
 import icon from '../util/icon';
 import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import * as actions from '../store/actions'
+import { useSelector, useDispatch } from 'react-redux';
 const { MdChevronRight, MdAutoFixHigh, IoMdAdd, RiDeleteBin6Line, IoMdRefresh} = icon;
 const Widget = () => {
     const status = [
@@ -9,8 +12,52 @@ const Widget = () => {
             name: 'Home Page',
         }
     ]
+    const dispatch = useDispatch();
+    const { widgets } = useSelector(state => state.app);
+    useEffect(() => {
+        dispatch(actions.getWidget());
+    }, [dispatch])
+
+    const [current, setCurrent] = useState(1);
+    const limit = 10;
+    const lastIndex = current * limit;
+    const firstIndex = lastIndex - limit;
+    const currentWidget = widgets?.slice(firstIndex, lastIndex);
+    const handleSearch = (value) => {
+        dispatch(actions.getWidget(value))
+    }
+
+    const [isModal, setIsModal] = useState(false);
+    const [deleteItem, setDeleteItem] = useState();
+    const [selectedIds, setSelectedIds] = useState([]);
+        
+    const handleCheckItem = (id) => {
+        setSelectedIds(prev => {
+            if (prev.includes(id)) {
+                return prev.filter(item => item !== id);
+            } else {
+                return [...prev, id]; 
+            }
+        });
+    }
+    const handleCheckAll = () => {
+        if (selectedIds.length === currentWidget?.length) {
+            setSelectedIds([]); 
+        } else {
+            setSelectedIds(currentWidget?.map(item => item._id));
+        }
+    }
+    const handleDelete = () => {
+        if (deleteItem) {
+            dispatch(actions.deleteWidget(deleteItem)); 
+        } else if (selectedIds.length > 0) {
+            dispatch(actions.deleteManyWidget(selectedIds)); 
+            setSelectedIds([])
+        }
+    }
     return (
         <div className="full pt-5">
+            {isModal && <ModelToast isOpen={isModal} setIsOpen={setIsModal} onDelete={handleDelete}/>}
             <div className="w-full px-[30px] flex gap-8">
                 <div className="w-full">
                     <div className="flex items-center gap-2 text-[15px] text-color">
@@ -28,6 +75,11 @@ const Widget = () => {
             <div className="w-full bg-white border-t-custom px-[30px] mt-8">
                 <div className="flex items-center gap-5 mt-5 justify-between ">
                     <div className="w-3/5 flex items-center gap-5">
+                        <Search 
+                            className={"rounded-lg!"}  
+                            placeholder={"Nhập tên widget..."}
+                            onSearch={handleSearch}
+                        />
                         <select 
                             className={`w-1/3 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 
                                 focus:border-blue-500 block py-1.5 px-2.5 dark:bg-gray-700 
@@ -42,7 +94,7 @@ const Widget = () => {
                         </select>
                     </div>
                     <div className="flex items-center justify-end gap-3">
-                        <NavLink to={'/product/add'}>
+                        <NavLink to={'/widget/add'}>
                             <Button className={"gap-2.5 py-1.5! border-none! bg-blue-500 text-white hover:bg-blue-600 text-sm"}>
                                 <CircleButton className={'h-4! w-4! bg-white!'}>
                                     <IoMdAdd className='text-blue-600 text-sm'/>
@@ -50,11 +102,21 @@ const Widget = () => {
                                 Thêm mới
                             </Button>
                         </NavLink>
-                        <Button className={"gap-2.5 py-1.5! border-none! bg-red-500 text-white hover:bg-red-600 text-sm"}>
+                        <Button 
+                            className={"gap-2.5 py-1.5! border-none! bg-red-500 text-white hover:bg-red-600 text-sm"}
+                            onClick={() => {
+                                setIsModal(true)
+                            }}
+                        >
                             <RiDeleteBin6Line className='text-white text-base'/>
-                            Xóa 0
+                             Xóa ({selectedIds.length})
                         </Button>
-                        <Button className={"gap-2.5 py-1.5! border-none! bg-gray-500 text-white hover:bg-gray-600 text-sm"}>
+                        <Button 
+                            className={"gap-2.5 py-1.5! border-none! bg-gray-500 text-white hover:bg-gray-600 text-sm"}
+                            onClick={() => {
+                                setSelectedIds([]);
+                            }}
+                        >
                             <IoMdRefresh className='text-white text-base'/>
                             Cancel
                         </Button>
@@ -66,10 +128,15 @@ const Widget = () => {
                             <tr>
                                 <th scope="col" className="px-2 py-3"></th>
                                 <th scope="col" className="px-2 py-3">
-                                    <input type="checkbox" className='scale-120'/>
+                                    <input 
+                                        type="checkbox" 
+                                        className='scale-120'
+                                        checked={selectedIds?.length === currentWidget?.length && currentWidget?.length > 0}
+                                        onChange={handleCheckAll}
+                                    />
                                 </th>
                                 <th scope="col" className="px-4 py-3">
-                                    Name
+                                    Tiêu đề
                                 </th>
                                 <th scope="col" className="px-4 py-3">
                                     Image
@@ -89,47 +156,84 @@ const Widget = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 row-table">
-                                <td className="px-2 py-4 w-10 text-center">
-                                    <span className='text-base font-semibold'>1</span>
-                                </td>
-                                <td className="px-2 py-4 w-10">
-                                    <input type="checkbox" className='scale-120'/>
-                                </td>
-                                <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-6/13">
-                                    Đồng hồ siêu cấp víp pro version 2.100
-                                </th>
-                                <td className="py-4 w-1/10 ">
-                                    <div className="w-full">
-                                        <img src={'https://greatsreview86.com/uploads/images/Videogen.jpg'} alt="ảnh sản phẩm" 
-                                        className='w-[70px] h-[70px] rounded-[5px] border-custom'/>
-                                    </div>
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    Videogen
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    1111
-                                </td>
-                                <td className="px-4 py-4 w-1/11">
-                                    31-05-2025
-                                </td>
-                                <td className="py-4 w-1/10 text-center px-4">
-                                    <div className="flex items-start justify-start gap-3 m-auto">
-                                        <NavLink to={``}>
-                                            <Button className={"py-2! px-2! bg-blue-500  text-white"}>
-                                                <MdAutoFixHigh className='text-[18px]'/>
+                            {widgets && widgets?.length > 0 ? currentWidget?.map((item, index) => (
+                                <tr 
+                                    key={item._id}
+                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 row-table"
+                                >
+                                    <td className="px-2 py-4 w-10 text-center">
+                                        <span className='text-base font-semibold'>
+                                            {index + 1}
+                                        </span>
+                                    </td>
+                                    <td className="px-2 py-4 w-10">
+                                        <input 
+                                            type="checkbox" 
+                                            className='scale-120'
+                                            checked={selectedIds.includes(item._id)}
+                                            onChange={() => handleCheckItem(item._id)}
+                                        />
+                                    </td>
+                                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-6/16">
+                                        {item.name}
+                                    </th>
+                                    <td className="py-4 w-2/11 ">
+                                        <div className="w-full">
+                                            <img src={'https://greatsreview86.com/uploads/images/Videogen.jpg'} alt="ảnh sản phẩm" 
+                                            className='w-[70px] h-[70px] rounded-[5px] border-custom'/>
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-4 w-1/11">
+                                        {
+                                            item.hienthi === 'Yes' && 
+                                            <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize"}>
+                                                Yes
                                             </Button>
-                                        </NavLink>
-                                        <Button 
-                                        className={"py-2! px-2! bg-red-500 text-white"}>
-                                            <RiDeleteBin6Line className='text-[18px]'/>
-                                        </Button>
-                                    </div>
-                                </td>
-                            </tr>
+                                        }
+                                        {
+                                            item.hienthi === 'No' && 
+                                            <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize"}>
+                                                No
+                                            </Button>
+                                        }
+                                    </td>
+                                    <td className="px-4 py-4 w-1/10">
+                                        {item.stt}
+                                    </td>
+                                    <td className="px-4 py-4 w-1/10">
+                                        {item.formatDate}
+                                    </td>
+                                    <td className="py-4 w-1/10 text-center px-4">
+                                        <div className="flex items-start justify-start gap-3 m-auto">
+                                            <NavLink to={`/widget/${item._id}`}>
+                                                <Button className={"py-2! px-2! bg-blue-500  text-white"}>
+                                                    <MdAutoFixHigh className='text-[18px]'/>
+                                                </Button>
+                                            </NavLink>
+                                            <Button 
+                                                className={"py-2! px-2! bg-red-500 text-white"}
+                                                onClick={() => {
+                                                    setDeleteItem(item._id);
+                                                    setIsModal(true);
+                                                }}
+                                            >
+                                                <RiDeleteBin6Line className='text-[18px]'/>
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )) : (
+                                <Empty/>
+                            )}
                         </tbody>
                     </table>
+                    {widgets && currentWidget?.length > 0 ? (
+                        <PageBar 
+                            currentPage={current} 
+                            totalPage={Math.ceil(widgets?.length / limit)}
+                            onPageChange={setCurrent}
+                        />
+                    ): (<></>)}
                 </div>
             </div>
         </div>
