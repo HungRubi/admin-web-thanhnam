@@ -1,7 +1,7 @@
 const File = () => {
-    return (
-        <h1>File</h1> 
-    );
-};
+  return (
+    <h1>File</h1>
+  )
+}
 
-export default File;
+export default File

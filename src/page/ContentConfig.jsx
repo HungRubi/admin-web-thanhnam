@@ -2,8 +2,41 @@ import { NavLink } from 'react-router-dom';
 import { Input, Button, Textarea } from '../components';
 import icon from '../util/icon';
 const { MdChevronRight } = icon;
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from '../store/actions'
 const ContentConfig = () => {
-    
+    const dispatch = useDispatch();
+    const { contentConfig } = useSelector(state => state.app)
+    useEffect(() => {
+        dispatch(actions.getContentConfigEdit());
+    }, [dispatch]) 
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+        howToApply: "",
+        FAQs: "",
+    })
+    useEffect(() => {
+        if(contentConfig) {
+            setFormData({
+                name: contentConfig?.name || "",
+                description: contentConfig?.description || "",
+                howToApply: contentConfig?.howToApply || "",
+                FAQs: contentConfig?.FAQs || "",
+            })
+        }
+    }, [contentConfig])
+    const handleChange = (e, selectedItem) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: selectedItem ? selectedItem.id || selectedItem._id : e.target.value,
+        })
+    }
+    const hanleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(actions.updateContentConfigEdit(formData));
+    } 
 
     return (
         <div className="full pt-5">
@@ -21,7 +54,7 @@ const ContentConfig = () => {
                     <h2 className="text-[35px] font-semibold">Cấu hình nội dung</h2>
                 </div>
             </div>
-            <form className="w-full px-[30px] bg-white mt-8 min-h-screen">
+            <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={hanleSubmit}>
                 <div className="w-full flex border-b-custom py-10">
                     <div className="w-2/6 ">
                         <h5 className="text-[20px] font-medium text-black text-color mt-5">
@@ -34,17 +67,31 @@ const ContentConfig = () => {
                     <div className="flex-1">
                         <Input 
                             label={"Site name"} 
-                            name={"siteName"}
+                            placeholder={"Site name"} 
+                            name={"name"}
+                            onChange={handleChange}
+                            value={formData?.name}
                         />
                         <Textarea 
                             label={"Mô tả coupons"} 
+                            onChange={handleChange}
                             row={5} 
-                            name={"metaKeyword"}
+                            name={"description"}
+                            children={formData?.description}
                         />
                         <Textarea 
                             label={"How to apply"} 
+                            onChange={handleChange}
                             row={5} 
                             name={"howToApply"}
+                            children={formData?.howToApply}
+                        />
+                        <Textarea 
+                            label={"FAQs"} 
+                            onChange={handleChange}
+                            row={5} 
+                            name={"FAQs"}
+                            children={formData?.FAQs}
                         />
                     </div>
                 </div>

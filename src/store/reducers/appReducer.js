@@ -33,6 +33,12 @@ const initState = {
 
     menus: [],
     menuEdit: {},
+
+    authorConfig: {},
+    globalConfig: {},
+    socialConfig: {},
+    seoConfig: {},
+    contentConfig: {},
 }
 
 const appReducer = (state = initState, action) => {
@@ -586,6 +592,72 @@ const appReducer = (state = initState, action) => {
                 ...state,
                 menus: action.payload.menus || [],
             }
+
+        /** GLOBAL CONFIG */
+        case actionType.GET_GLOBAL:
+            return {
+                ...state,
+                globalConfig: action.payload.data || {}
+            }
+
+        case actionType.UPDATE_GLOBAL:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        /** AUTHOR CONFIG */
+        case actionType.GET_AUTHOR:
+            return {
+                ...state,
+                authorConfig: action.payload.data || {}
+            }
+
+        case actionType.UPDATE_AUTHOR:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        /** SOCIAL CONFIG */
+        case actionType.GET_SOCIAL:
+            return {
+                ...state,
+                socialConfig: action.payload.data || {}
+            }
+
+        case actionType.UPDATE_SOCIAL:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        /** SEO CONFIG */
+        case actionType.GET_SEO:
+            return {
+                ...state,
+                seoConfig: action.payload.data || {}
+            }
+
+        case actionType.UPDATE_SEO:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
+        /** SEO CONFIG */
+        case actionType.GET_CONTENT_CONFIG:
+            return {
+                ...state,
+                contentConfig: action.payload.data || {}
+            }
+
+        case actionType.UPDATE_CONTENT_CONFIG:
+            return {
+                ...state,
+                message: action.payload.message,
+            }
+
 
         default:
             return state;

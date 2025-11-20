@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom';
 import { Input, Button } from '../components';
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from '../store/actions'
 import icon from '../util/icon';
 const { MdChevronRight } = icon;
 const SocialConfig = () => {
@@ -23,7 +25,43 @@ const SocialConfig = () => {
     const removeFile = (id, setFiles, files) => {
         setFiles(files.filter((f) => f.id !== id));
     };
-
+    const dispatch = useDispatch();
+    const { socialConfig } = useSelector(state => state.app)
+    useEffect(() => {
+        dispatch(actions.getSocialConfigEdit());
+    }, [dispatch]) 
+    const [formData, setFormData] = useState({
+        iamge: '',
+        facebook: '',
+        facebookPage: '',
+        twitter: '',
+        instagram: '',
+        pinterest: '',
+        youtube: '',
+    })
+    useEffect(() => {
+        if(socialConfig) {
+            setFormData({
+                iamge: socialConfig?.iamge || '',
+                facebook: socialConfig?.facebook || '',
+                facebookPage: socialConfig?.facebookPage || '',
+                twitter: socialConfig?.twitter || '',
+                instagram: socialConfig?.instagram || '',
+                pinterest: socialConfig?.pinterest || '',
+                youtube: socialConfig?.youtube || '',
+            })
+        }
+    }, [socialConfig])
+    const handleChange = (e, selectedItem) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: selectedItem ? selectedItem.id || selectedItem._id : e.target.value,
+        })
+    }
+    const hanleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(actions.updateSocialConfigEdit(formData));
+    } 
     return (
         <div className="full pt-5">
             <div className="w-full px-[30px] flex gap-8">
@@ -40,7 +78,7 @@ const SocialConfig = () => {
                     <h2 className="text-[35px] font-semibold">Cấu hình mạng xã hội</h2>
                 </div>
             </div>
-            <form className="w-full px-[30px] bg-white mt-8 min-h-screen">
+            <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={hanleSubmit}>
                 <div className="w-full flex border-b-custom py-10">
                     <div className="w-2/6 ">
                         <h5 className="text-[20px] font-medium text-black text-color mt-5">
@@ -114,27 +152,46 @@ const SocialConfig = () => {
                         </div>
                         <Input 
                             label={"Facebook URL"} 
+                            placeholder={"Facebook URL"} 
                             name={"facebook"}
+                            onChange={handleChange}
+                            value={formData?.facebook}
                         />
                         <Input 
                             label={"Facebook Page ID"} 
-                            name={"facebook"}
+                            placeholder={"Facebook Page ID"} 
+                            onChange={handleChange}
+                            name={"facebookPage"}
+                            value={formData?.facebookPage}
+
                         />
                         <Input 
                             label={"Twitter URL"} 
+                            placeholder={"Twitter URL"} 
                             name={"twitter"}
+                            onChange={handleChange}
+                            value={formData?.twitter}
                         />
                         <Input 
                             label={"Instagram URL"} 
+                            placeholder={"Instagram URL"} 
                             name={"instagram"}
+                            onChange={handleChange}
+                            value={formData?.instagram}
                         />
                         <Input 
                             label={"Pinterest URL"} 
+                            placeholder={"Pinterest URL"} 
                             name={"pinterest"}
+                            onChange={handleChange}
+                            value={formData?.pinterest}
                         />
                         <Input 
                             label={"Youtobe URL"} 
+                            placeholder={"Youtobe URL"} 
                             name={"youtube"}
+                            onChange={handleChange}
+                            value={formData?.youtube}
                         />
                     </div>
                 </div>

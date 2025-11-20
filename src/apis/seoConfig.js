@@ -1,9 +1,9 @@
 import axios from "../axios";
 
-export const getGlobalConfigEdit = async () => {
+export const getSeoConfigEdit = async () => {
     try {
         const response = await axios({
-            url: `/global/`,
+            url: `/seo/`,
             method: 'GET',
         });
         return response; 
@@ -18,14 +18,13 @@ export const getGlobalConfigEdit = async () => {
     }
 };
 
-export const updateGlobalConfigEdit = async (data) => {
+export const updateSeoConfigEdit = async (data) => {
     try {
         const response = await axios({
-            url: `/global/`,
+            url: `/seo/`,
             method: 'PUT',
             data: data
         });
-        console.log(response)
         return response; 
     } catch (error) {
         if(error.response){
