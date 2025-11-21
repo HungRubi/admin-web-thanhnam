@@ -20,8 +20,16 @@ const userConfig = {
     ],
 }
 
+const appConfig = {
+    ...commonConfig,
+    key: 'appAdmin',
+    whitelist: [
+        'globalConfig',
+    ],
+}
+
 const rootReducer = combineReducers({
-    app: appReducer,
+    app: persistReducer(appConfig, appReducer),
     user: persistReducer(userConfig, userReducer),
 })
 

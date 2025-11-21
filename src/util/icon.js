@@ -17,7 +17,7 @@ import { BsTag } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { IoSunnyOutline } from "react-icons/io5";
-import { BsArrowBarLeft } from "react-icons/bs";
+import { BsArrowBarLeft, BsArrowBarRight } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { FaPause } from "react-icons/fa6";
@@ -102,6 +102,7 @@ const icon = {
     FaPause,
     FaStar,
     BsArrowBarLeft,
+    BsArrowBarRight,
     IoSunnyOutline,
     FiSearch,
     BsTag,

@@ -1,30 +1,12 @@
 import { useState, useEffect } from "react";
 import { NavLink } from 'react-router-dom';
-import { Input, Button } from '../components';
+import { Input, Button, FilePicker } from '../components';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 import icon from '../util/icon';
 const { MdChevronRight } = icon;
 const SocialConfig = () => {
-    const [files, setFiles] = useState([]);
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            files.forEach(f => URL.revokeObjectURL(f.preview));
-            setFiles([
-                {
-                    id: crypto.randomUUID(), 
-                    file,
-                    preview: URL.createObjectURL(file),
-                },
-            ]);
-        }
-    };
-
-    const removeFile = (id, setFiles, files) => {
-        setFiles(files.filter((f) => f.id !== id));
-    };
+    
     const dispatch = useDispatch();
     const { socialConfig } = useSelector(state => state.app)
     useEffect(() => {
@@ -62,94 +44,40 @@ const SocialConfig = () => {
         e.preventDefault();
         dispatch(actions.updateSocialConfigEdit(formData));
     } 
+    const handleAssetChange = (file) => {
+        setFormData((prev) => ({
+            ...prev,
+            iamge: file?.path || '',
+        }));
+    };
     return (
-        <div className="full pt-5">
-            <div className="w-full px-[30px] flex gap-8">
+        <div className="full pt-3 sm:pt-5">
+            <div className="w-full px-4 sm:px-6 md:px-[30px] flex gap-4 sm:gap-8">
                 <div className="w-full">
-                    <div className="flex items-center gap-2 text-[15px] text-color">
+                    <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-[15px] text-color">
                         <NavLink to={'/'} className={"hover:text-blue-600 transition duration-300 ease-linear"}>
                             Home
                         </NavLink>
-                        <MdChevronRight/>
+                        <MdChevronRight className="text-sm sm:text-base"/>
                         <NavLink to={'/social-config'} className={"text-blue-600"}>
                             Social Config
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Cấu hình mạng xã hội</h2>
+                    <h2 className="text-xl sm:text-2xl md:text-[35px] font-semibold mt-3 sm:mt-0">Cấu hình mạng xã hội</h2>
                 </div>
             </div>
-            <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={hanleSubmit}>
-                <div className="w-full flex border-b-custom py-10">
-                    <div className="w-2/6 ">
-                        <h5 className="text-[20px] font-medium text-black text-color mt-5">
+            <form className="w-full px-4 sm:px-6 md:px-[30px] bg-white mt-4 sm:mt-8 min-h-screen" onSubmit={hanleSubmit}>
+                <div className="w-full flex flex-col sm:flex-row border-b-custom py-5 sm:py-10">
+                    <div className="w-full sm:w-2/6 hidden sm:block">
+                        <h5 className="text-lg sm:text-[20px] font-medium text-black text-color mt-0 sm:mt-5">
                             Thông tin cấu hình
                         </h5>
                         <p className="text-[12px] text-[#888] line-clamp-2">
                             Social configuration overview
                         </p>
                     </div>
-                    <div className="flex-1">
-                        <div className="">
-                            <h1 className="block text-[16px] font-medium text-gray-800 mt-5 mb-2.5">Avatar</h1>
-                            <div className="mb-5">
-                                <label className="relative inline-block">
-                                    <input
-                                        type="file"
-                                        onChange={handleFileChange}
-                                        className="hidden"
-                                        accept="image/*"
-                                    />
-                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded cursor-pointer hover:bg-blue-700 transition">
-                                        Chọn file
-                                    </span>
-                                </label>
-                            </div>
-
-                            <div className="w-2/3">
-                                {files.map((item) => (
-                                    <div key={item.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                                    <div className="flex items-start gap-4">
-                                        {/* File Preview */}
-                                        <div className="shrink-0">
-                                        {item.file.type.startsWith('image/') ? (
-                                            <img
-                                            src={item.preview}
-                                            alt={item.file.name}
-                                            className="w-32 h-32 object-cover rounded border border-gray-300"
-                                            />
-                                        ) : (
-                                            <div className="w-32 h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                                            <span className="text-gray-400 text-xs text-center px-2">No preview</span>
-                                            </div>
-                                        )}
-                                        </div>
-
-                                        {/* File Info */}
-                                        <div className="grow">
-                                        <p className="font-medium text-gray-800 break-all">{item.file.name}</p>
-                                        <p className="text-sm text-gray-500 mt-1">
-                                            {(item.file.size / 1024).toFixed(2)} KB
-                                        </p>
-                                        </div>
-
-                                        {/* Remove Button */}
-                                        <button
-                                        onClick={() => removeFile(item.id)}
-                                        className="shrink-0 text-gray-400 hover:text-red-600 transition"
-                                        >
-                                            X
-                                        </button>
-                                    </div>
-                                    </div>
-                                ))}
-
-                                {files.length === 0 && (
-                                    <div className="bg-white rounded-lg p-12 border-2 border-dashed border-gray-300 text-center">
-                                    <p className="text-gray-400">Chưa có file nào được chọn</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                    <div className="w-full sm:flex-1">
+                        <FilePicker label="Image" value={formData?.iamge} onChange={handleAssetChange} />
                         <Input 
                             label={"Facebook URL"} 
                             placeholder={"Facebook URL"} 

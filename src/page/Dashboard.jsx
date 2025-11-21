@@ -68,32 +68,32 @@ const Dashboard = () => {
         dispatch(actions.getCategory(value))
     }
     return (
-        <div className="full pt-5">
+        <div className="full pt-3 sm:pt-5">
             {isModal && <ModelToast isOpen={isModal} setIsOpen={setIsModal} onDelete={handleDelete}/>}
-            <div className="w-full px-[30px] flex gap-8">
+            <div className="w-full px-4 sm:px-6 md:px-[30px] flex gap-4 sm:gap-8">
                 <div className="w-full">
-                    <div className="flex items-center gap-2 text-[15px] text-color">
+                    <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-[15px] text-color">
                         <NavLink to={'/'} className={"hover:text-blue-600 transition duration-300 ease-linear"}>
                             Dashboard
                         </NavLink>
-                        <MdChevronRight/>
+                        <MdChevronRight className="text-sm sm:text-base"/>
                         <NavLink to={'/'} className={"text-blue-600"}>
                             Danh mục
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold mt-5">Quản lý danh mục</h2>
+                    <h2 className="text-xl sm:text-2xl md:text-[35px] font-semibold mt-3 sm:mt-5">Quản lý danh mục</h2>
                 </div>
             </div>
-            <div className="w-full bg-white border-t-custom px-[30px] mt-8">
-                <div className="flex items-center gap-5 mt-5 justify-between ">
-                    <div className="w-3/5 flex items-center gap-5">
+            <div className="w-full bg-white border-t-custom px-4 sm:px-6 md:px-[30px] mt-4 sm:mt-8">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 mt-3 sm:mt-5 justify-between">
+                    <div className="w-full sm:w-3/5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5">
                         <Search 
                             className={"rounded-lg!"}  
                             placeholder={"Nhập tên danh mục...."} 
                             onSearch={handleSearch}
                         />
                         <select 
-                            className={`w-1/3 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 
+                            className={`w-full sm:w-1/3 border border-gray-300 text-gray-800 text-xs sm:text-sm rounded-lg focus:ring-blue-500 
                                 focus:border-blue-500 block py-1.5 px-2.5 dark:bg-gray-700 
                                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                 dark:focus:ring-blue-500 dark:focus:border-blue-500 `} 
@@ -105,64 +105,66 @@ const Dashboard = () => {
                             ))}
                         </select>
                     </div>
-                    <div className="flex items-center justify-end gap-3">
+                    <div className="flex flex-wrap items-center justify-start sm:justify-end gap-2 sm:gap-3">
                         <NavLink to={'/category-add'}>
-                            <Button className={"gap-2.5 py-1.5! border-none! bg-blue-500 text-white hover:bg-blue-600 text-sm"}>
-                                <CircleButton className={'h-4! w-4! bg-white!'}>
-                                    <IoMdAdd className='text-blue-600 text-sm'/>
+                            <Button className={"gap-1.5 sm:gap-2.5 py-1.5! border-none! bg-blue-500 text-white hover:bg-blue-600 text-xs sm:text-sm"}>
+                                <CircleButton className={'h-3! w-3! sm:h-4! sm:w-4! bg-white!'}>
+                                    <IoMdAdd className='text-blue-600 text-xs sm:text-sm'/>
                                 </CircleButton>
-                                Thêm mới
+                                <span className="hidden sm:inline">Thêm mới</span>
+                                <span className="sm:hidden">Thêm</span>
                             </Button>
                         </NavLink>
                         <Button 
-                            className={"gap-2.5 py-1.5! border-none! bg-red-500 text-white hover:bg-red-600 text-sm"}
+                            className={"gap-1.5 sm:gap-2.5 py-1.5! border-none! bg-red-500 text-white hover:bg-red-600 text-xs sm:text-sm"}
                             onClick={() => {
                                 setIsModal(true)
                             }}
                         >
-                            <RiDeleteBin6Line className='text-white text-base'/>
-                             Xóa ({selectedIds.length})
+                            <RiDeleteBin6Line className='text-white text-sm sm:text-base'/>
+                            <span className="hidden sm:inline">Xóa ({selectedIds.length})</span>
+                            <span className="sm:hidden">({selectedIds.length})</span>
                         </Button>
                         <Button 
-                            className={"gap-2.5 py-1.5! border-none! bg-gray-500 text-white hover:bg-gray-600 text-sm"}
+                            className={"gap-1.5 sm:gap-2.5 py-1.5! border-none! bg-gray-500 text-white hover:bg-gray-600 text-xs sm:text-sm"}
                             onClick={() => {
                                 setSelectedIds([]);
                             }}
                         >
-                            <IoMdRefresh className='text-white text-base'/>
-                            Cancel
+                            <IoMdRefresh className='text-white text-sm sm:text-base'/>
+                            <span className="hidden sm:inline">Cancel</span>
                         </Button>
                     </div>
                 </div>
-                <div className="relative overflow-x-auto mt-5">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-400 shadow_table">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                <div className="relative overflow-x-auto mt-3 sm:mt-5">
+                    <table className="w-full text-xs sm:text-sm text-left rtl:text-right text-gray-600 dark:text-gray-400 shadow_table min-w-[600px]">
+                        <thead className="text-[10px] sm:text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-2 py-3"></th>
-                                <th scope="col" className="px-2 py-3">
+                                <th scope="col" className="px-1 sm:px-2 py-2 sm:py-3"></th>
+                                <th scope="col" className="px-1 sm:px-2 py-2 sm:py-3">
                                     <input 
                                         type="checkbox" 
-                                        className='scale-120'
+                                        className='scale-110 sm:scale-120'
                                         checked={selectedIds?.length === currentCategory?.length && currentCategory?.length > 0}
                                         onChange={handleCheckAll}
                                     />
                                 </th>
-                                <th scope="col" className="px-4 py-3">
+                                <th scope="col" className="px-2 sm:px-4 py-2 sm:py-3">
                                     name
                                 </th>
-                                <th scope="col" className="px-4 py-3">
+                                <th scope="col" className="px-2 sm:px-4 py-2 sm:py-3">
                                     Hiển thị
                                 </th>
-                                <th scope="col" className="px-4 py-3">
+                                <th scope="col" className="px-2 sm:px-4 py-2 sm:py-3 truncate hidden md:table-cell">
                                     Hiển thị trang chủ
                                 </th>
-                                <th scope="col" className="px-4 py-3">
+                                <th scope="col" className="px-2 sm:px-4 py-2 sm:py-3 hidden lg:table-cell">
                                     STT
                                 </th>
-                                <th scope="col" className="px-4 py-3">
+                                <th scope="col" className="px-2 sm:px-4 py-2 sm:py-3 truncate hidden lg:table-cell">
                                     Ngày đăng
                                 </th>
-                                <th scope="col" className="px-4 py-3">
+                                <th scope="col" className="px-2 sm:px-4 py-2 sm:py-3">
                                     
                                 </th>
                             </tr>
@@ -173,70 +175,70 @@ const Dashboard = () => {
                                     key={item._id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 row-table"
                                 >
-                                    <td className="px-2 py-4 w-10 text-center">
-                                        <span className='text-base font-semibold'>{index + 1}</span>
+                                    <td className="px-1 sm:px-2 py-2 sm:py-4 w-8 sm:w-10 text-center">
+                                        <span className='text-xs sm:text-base font-semibold'>{index + 1}</span>
                                     </td>
-                                    <td className="px-2 py-4 w-10">
+                                    <td className="px-1 sm:px-2 py-2 sm:py-4 w-8 sm:w-10">
                                         <input 
                                             type="checkbox" 
-                                            className='scale-120'
+                                            className='scale-110 sm:scale-120'
                                             checked={selectedIds.includes(item._id)}
                                             onChange={() => handleCheckItem(item._id)}
                                         />
                                     </td>
-                                    <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-5/13">
-                                        {item.tendanhmuc}
+                                    <th scope="row" className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-xs sm:text-sm text-gray-900 dark:text-white w-4/13">
+                                        <span className="line-clamp-2">{item.tendanhmuc}</span>
                                     </th>
-                                    <td className="px-4 py-4 w-2/15">
+                                    <td className="px-2 sm:px-4 py-2 sm:py-4 w-2/15">
                                         {
                                             item.hienthi === true && 
-                                            <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize"}>
-                                                Có hiển thị
+                                            <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize text-[10px] sm:text-xs"}>
+                                                Yes
                                             </Button>
                                         }
                                         {
                                             item.hienthi === false && 
-                                            <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize"}>
-                                                Không hiển thị
+                                            <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize text-[10px] sm:text-xs"}>
+                                                No
                                             </Button>
                                         }
                                         
                                     </td>
-                                    <td className="px-4 py-4 w-2/15">
+                                    <td className="px-2 sm:px-4 py-2 sm:py-4 w-2/10 hidden md:table-cell">
                                         {
                                             item.hienthitrangchu === true && 
-                                            <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize"}>
-                                                Có hiển thị
+                                            <Button className={"border-[#90d67f]! py-0.5! bg-[#d9fbd0] text-main capitalize text-[10px] sm:text-xs"}>
+                                                Yes
                                             </Button>
                                         }
                                         {
                                             item.hienthitrangchu === false && 
-                                            <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize"}>
-                                                Không hiển thị
+                                            <Button className={"border-[#f74d4d8a]! py-0.5! bg-[#ff8585a6] text-[#c90c05] capitalize text-[10px] sm:text-xs"}>
+                                                No
                                             </Button>
                                         }
                                     </td>
-                                    <td className="px-4 py-4 w-1/10">
+                                    <td className="px-2 sm:px-4 py-2 sm:py-4 w-1/10 text-xs sm:text-sm hidden lg:table-cell">
                                         {item.sapxep}
                                     </td>
-                                    <td className="px-4 py-4 w-1/10">
+                                    <td className="px-2 sm:px-4 py-2 sm:py-4 w-1/10 text-[10px] sm:text-xs truncate hidden lg:table-cell">
                                         {item.formatDate}
                                     </td>
-                                    <td className="py-4 w-1/10 text-center px-4">
-                                        <div className="flex items-start justify-start gap-3 m-auto">
+                                    <td className="py-2 sm:py-4 w-1/10 text-center px-2 sm:px-4">
+                                        <div className="flex items-center justify-center gap-2 sm:gap-3 m-auto">
                                             <NavLink to={`/category/${item._id}`}>
-                                                <Button className={"py-2! px-2! bg-blue-500  text-white"}>
-                                                    <MdAutoFixHigh className='text-[18px]'/>
+                                                <Button className={"py-1.5! px-1.5! sm:py-2! sm:px-2! bg-blue-500 text-white"}>
+                                                    <MdAutoFixHigh className='text-sm sm:text-[18px]'/>
                                                 </Button>
                                             </NavLink>
                                             <Button 
-                                                className={"py-2! px-2! bg-red-500 text-white"}
+                                                className={"py-1.5! px-1.5! sm:py-2! sm:px-2! bg-red-500 text-white"}
                                                 onClick={() => {
                                                     setDeleteItem(item._id);
                                                     setIsModal(true);
                                                 }}
                                             >
-                                                <RiDeleteBin6Line className='text-[18px]'/>
+                                                <RiDeleteBin6Line className='text-sm sm:text-[18px]'/>
                                             </Button>
                                         </div>
                                     </td>

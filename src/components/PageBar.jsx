@@ -37,28 +37,28 @@ const PageBar = ({ currentPage, totalPage, onPageChange, className }) => {
     const visiblePages = getVisiblePages();
 
     return (
-        <div className={`flex items-center justify-center my-8 gap-2 ${className}`}>
-            <Button className={`bg-transparent !px-0 !py-0 !border-none ${currentPage === 1 ? "hidden" : ""}`}>
+        <div className={`flex items-center justify-center my-4 sm:my-6 md:my-8 gap-1.5 sm:gap-2 flex-wrap ${className}`}>
+            <Button className={`bg-transparent px-0! py-0! border-none! ${currentPage === 1 ? "hidden" : ""}`}>
                 <NavLink
                     onClick={() => onPageChange(currentPage - 1)} 
-                    className="w-[33px] h-[33px] text-[#393939] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center">
-                    <AiOutlineLeft className='text-[12px]'/>
+                    className="w-[28px] h-[28px] sm:w-[33px] sm:h-[33px] text-[#393939] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center">
+                    <AiOutlineLeft className='text-[10px] sm:text-[12px]'/>
                 </NavLink>
             </Button>
 
             {/* Hiển thị trang đầu và dấu ... nếu cần */}
             {visiblePages[0] > 1 && (
                 <>
-                    <Button className="bg-transparent !px-0 !py-0 !border-none">
+                    <Button className="bg-transparent px-0! py-0! border-none!">
                         <NavLink
                             onClick={() => onPageChange(1)}
-                            className="w-[33px] h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center text-[#393939]"
+                            className="w-[28px] h-[28px] sm:w-[33px] sm:h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center text-[#393939] text-xs sm:text-sm"
                         >
                             1
                         </NavLink>
                     </Button>
                     {visiblePages[0] > 2 && (
-                        <span className="px-2 text-[#393939]">...</span>
+                        <span className="px-1 sm:px-2 text-[#393939] text-xs sm:text-sm">...</span>
                     )}
                 </>
             )}
@@ -68,7 +68,7 @@ const PageBar = ({ currentPage, totalPage, onPageChange, className }) => {
                 <Button key={page} className="bg-transparent !px-0 !py-0 !border-none">
                     <NavLink
                         onClick={() => onPageChange(page)}
-                        className={`w-[33px] h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center ${
+                        className={`w-[28px] h-[28px] sm:w-[33px] sm:h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center text-xs sm:text-sm ${
                             currentPage === page ? 'bg-[#2f904b] text-white' : 'text-[#393939]'
                         }`}
                     >
@@ -81,12 +81,12 @@ const PageBar = ({ currentPage, totalPage, onPageChange, className }) => {
             {visiblePages[visiblePages.length - 1] < totalPage && (
                 <>
                     {visiblePages[visiblePages.length - 1] < totalPage - 1 && (
-                        <span className="px-2 text-[#393939]">...</span>
+                        <span className="px-1 sm:px-2 text-[#393939] text-xs sm:text-sm">...</span>
                     )}
                     <Button className="bg-transparent !px-0 !py-0 !border-none">
                         <NavLink
                             onClick={() => onPageChange(totalPage)}
-                            className="w-[33px] h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center text-[#393939]"
+                            className="w-[28px] h-[28px] sm:w-[33px] sm:h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center text-[#393939] text-xs sm:text-sm"
                         >
                             {totalPage}
                         </NavLink>
@@ -97,17 +97,17 @@ const PageBar = ({ currentPage, totalPage, onPageChange, className }) => {
             <Button className={`bg-transparent !px-0 !py-0 !border-none ${currentPage === totalPage ? "hidden" : ""}`}>
                 <NavLink
                     onClick={() => onPageChange(currentPage + 1)}
-                    className={`w-[33px] h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center ${
+                    className={`w-[28px] h-[28px] sm:w-[33px] sm:h-[33px] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center ${
                         currentPage === totalPage ? 'text-gray-400 cursor-not-allowed' : 'text-[#393939]'
                     }`}
                 >
-                    <AiOutlineRight className='text-[12px]' />
+                    <AiOutlineRight className='text-[10px] sm:text-[12px]' />
                 </NavLink>
             </Button>
 
             <Button className={`bg-transparent !px-0 !py-0 !border-none ${totalPage === 1 && "hidden"}`}>
                 <NavLink 
-                    className="w-auto h-[33px] text-[#393939] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center px-2.5 capitalize">
+                    className="w-auto h-[28px] sm:h-[33px] text-[#393939] rounded-[5px] border border-[#d2d2d2] flex items-center justify-center px-2 sm:px-2.5 capitalize text-xs sm:text-sm">
                     {currentPage}/{totalPage}
                 </NavLink>
             </Button>

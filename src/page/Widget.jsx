@@ -179,8 +179,14 @@ const Widget = () => {
                                     </th>
                                     <td className="py-4 w-2/11 ">
                                         <div className="w-full">
-                                            <img src={'https://greatsreview86.com/uploads/images/Videogen.jpg'} alt="ảnh sản phẩm" 
-                                            className='w-[70px] h-[70px] rounded-[5px] border-custom'/>
+                                        {item.image ? (
+                                            <img 
+                                                src={`${import.meta.env.VITE_SERVER_URL}/${item.image?.replace(/\\/g, "/")}`} 
+                                                alt={`${item.name}`} 
+                                                className='w-[70px] h-[70px] rounded-[5px] border-custom'
+                                            />
+                                                ) : (<p className='text-gray-400 px-4.5'>NULL</p>)
+                                            }
                                         </div>
                                     </td>
                                     <td className="px-4 py-4 w-1/11">

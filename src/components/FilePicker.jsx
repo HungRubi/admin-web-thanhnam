@@ -143,23 +143,23 @@ const FilePicker = ({ label, onChange, value }) => {
                 />
               </div>
               <div className="grow">
-                <p className="font-medium text-gray-800 break-all">
-                  {confirmedFile.name}
+                <p className="font-medium text-gray-800 break-all text-sm">
+                  Name: {confirmedFile.name}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  {formatSize(confirmedFile.size)}
+                  Size: {formatSize(confirmedFile.size)}
                 </p>
-                <p className="text-xs text-gray-400 mt-1">
-                  {confirmedFile.formatDate}
+                <p className="text-xs text-gray-500 mt-1">
+                  Date: {confirmedFile.formatDate}
                 </p>
                 <p className="text-xs text-gray-500 mt-2 break-all">
-                  {confirmedFile.path}
+                  Path: {confirmedFile.path}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleClearSelection}
-                className="shrink-0 text-gray-400 hover:text-red-600 transition"
+                className="shrink-0 text-gray-400 hover:text-red-600 transition p-2"
               >
                 X
               </button>
@@ -174,16 +174,16 @@ const FilePicker = ({ label, onChange, value }) => {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 px-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 px-4">
           <div className="bg-white w-full max-w-6xl max-h-[90vh] rounded shadow-2xl overflow-hidden flex flex-col">
-            <div className="flex justify-between items-center px-6 py-4 border-b gap-4">
+            <div className="flex justify-between items-center px-6 py-4 border-b border-b-[#c9c3c3d0] gap-4">
               <div className="flex items-center gap-2 text-sm text-gray-500 flex-wrap">
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-semibold text-gray-800">
                     Chọn file
                   </span>
                   <MdChevronRight />
-                  <span className="text-blue-600">
+                  <span className="text-blue-600 font-semibold">
                     {selectedFolder === null ? "Files" : "Thư mục con"}
                   </span>
                 </div>
@@ -197,7 +197,7 @@ const FilePicker = ({ label, onChange, value }) => {
                   }`}
                   disabled={isUploading}
                 >
-                  <MdCloudUpload className="text-base" />
+                  <MdCloudUpload className="text-lg" />
                   {isUploading ? "Đang tải..." : "Tải lên"}
                 </button>
                 <input
@@ -216,7 +216,7 @@ const FilePicker = ({ label, onChange, value }) => {
               </button>
             </div>
 
-            <div className="flex flex-1 border-t border-t-[#c9c3c3d0]">
+            <div className="flex flex-1">
               <div className="w-64 flex flex-col border-r border-r-[#c9c3c3d0] bg-gray-50">
                 <div
                   className={`w-full px-4 py-3 flex items-center gap-3 border-b border-b-[#c9c3c3d0] cursor-pointer ${
@@ -271,7 +271,7 @@ const FilePicker = ({ label, onChange, value }) => {
               </div>
             </div>
 
-            <div className="flex justify-end items-center gap-3 px-6 py-4 border-t bg-gray-50">
+            <div className="flex justify-end items-center gap-3 px-6 py-4 border-t border-t-[#c9c3c3d0] bg-gray-50">
               <button
                 type="button"
                 className="px-4 py-2 border border-gray-300 rounded text-sm"

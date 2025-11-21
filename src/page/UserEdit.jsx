@@ -50,36 +50,36 @@ const UserEdit = () => {
         }
     }, [message, navigate])
     return (
-        <div className="full pt-5">
-            <div className="w-full px-[30px] flex gap-8">
+        <div className="full pt-3 sm:pt-5">
+            <div className="w-full px-4 sm:px-6 md:px-[30px] flex gap-4 sm:gap-8">
                 <div className="w-full">
-                    <div className="flex items-center gap-2 text-[15px] text-color">
+                    <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-[15px] text-color">
                         <NavLink to={'/'} className={"hover:text-blue-600 transition duration-300 ease-linear"}>
                             Home
                         </NavLink>
-                        <MdChevronRight/>
+                        <MdChevronRight className="text-sm sm:text-base"/>
                         <NavLink to={'/user'} className={"text-blue-600"}>
                             Offer
                         </NavLink>
-                        <MdChevronRight/>
+                        <MdChevronRight className="text-sm sm:text-base"/>
                         <NavLink to={`/user/${id}`} className={"text-blue-600"}>
                             Cập nhật user
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Cập nhật user</h2>
+                    <h2 className="text-xl sm:text-2xl md:text-[35px] font-semibold mt-3 sm:mt-0">Cập nhật user</h2>
                 </div>
             </div>
-            <form className="w-full px-[30px] bg-white mt-8 min-h-screen" onSubmit={handleSubmit}>
-                <div className="w-full flex border-b-custom py-10">
-                    <div className="w-2/6 ">
-                        <h5 className="text-[20px] font-medium text-black text-color mt-5">
+            <form className="w-full px-4 sm:px-6 md:px-[30px] bg-white mt-4 sm:mt-8 min-h-screen" onSubmit={handleSubmit}>
+                <div className="w-full flex flex-col sm:flex-row border-b-custom py-5 sm:py-10">
+                    <div className="w-full sm:w-2/6 hidden sm:block">
+                        <h5 className="text-lg sm:text-[20px] font-medium text-black text-color mt-0 sm:mt-5">
                             Thông tin user
                         </h5>
                         <p className="text-[12px] text-[#888] line-clamp-2">
                             Mọi thông tin về user đều được bảo mật
                         </p>
                     </div>
-                    <div className="flex-1">
+                    <div className="w-full sm:flex-1">
                         <Input 
                             label={"Họ và tên"} 
                             placeholder={"Họ và tên"} 

@@ -29,7 +29,10 @@ export const updateGlobalConfigEdit = (data) => async (dispatch) => {
         if(response.status === 200){
             dispatch({
                 type: actionTypes.UPDATE_GLOBAL,
-                payload: response.data,
+                payload: {
+                    ...response.data,
+                    data: response.data.data || data,
+                },
             })
         }else{
             dispatch({

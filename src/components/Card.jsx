@@ -14,7 +14,8 @@ const  Card = ({ data, isOnClick, selected, isEditing, renameValue, onRenameChan
   return (
     <div 
       className={`
-        w-[calc(20%-15px)] bg-white shadow p-3 cursor-pointer 
+        w-full sm:w-[calc(50%-10px)] md:w-[calc(33.333%-10px)] lg:w-[calc(25%-12px)] xl:w-[calc(20%-15px)] 
+        bg-white shadow p-2 sm:p-3 cursor-pointer 
         transition-all duration-300 ease-in-out transform
         hover:scale-105 hover:shadow-xl
         ${selected ? "border-2 border-blue-500 bg-blue-50" : "border border-gray-200"}
@@ -22,7 +23,7 @@ const  Card = ({ data, isOnClick, selected, isEditing, renameValue, onRenameChan
       onClick={isOnClick}
     >
 
-      <div className="w-full h-[120px] bg-gray-100 overflow-hidden flex items-center justify-center">
+      <div className="w-full h-[100px] sm:h-[120px] bg-gray-100 overflow-hidden flex items-center justify-center">
         {data?.type === "file" && data?.path ? (
           <img 
             src={`${import.meta.env.VITE_SERVER_URL}/${data.path.replace(/\\/g, "/")}`}
@@ -36,7 +37,7 @@ const  Card = ({ data, isOnClick, selected, isEditing, renameValue, onRenameChan
 
       <input 
         className={`
-          mt-2 font-medium text-sm truncate py-2 w-full
+          mt-2 font-medium text-xs sm:text-sm truncate py-1.5 sm:py-2 w-full
           ${isEditing 
             ? "border border-blue-500 rounded px-2 text-gray-900 focus:ring-2 focus:ring-blue-100 outline-none" 
             : "border border-transparent bg-transparent"}
@@ -55,9 +56,9 @@ const  Card = ({ data, isOnClick, selected, isEditing, renameValue, onRenameChan
         autoFocus={isEditing}
       />
         
-      <div className="flex justify-between text-xs text-gray-500 mt-1">
-        <span>{data?.formatDate}</span>
-        <span>{formatSize(data?.size)}</span>
+      <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mt-1">
+        <span className="truncate pr-1">{data?.formatDate}</span>
+        <span className="shrink-0">{formatSize(data?.size)}</span>
       </div>
     </div>
   );

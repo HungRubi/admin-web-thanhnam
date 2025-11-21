@@ -68,6 +68,24 @@ const GlobalConfig = () => {
             })
         }
     }, [globalConfig])
+
+    // Cập nhật favicon động khi formData.favicon thay đổi
+    useEffect(() => {
+        if (formData?.favicon) {
+            const faviconUrl = `${import.meta.env.VITE_SERVER_URL}/${formData.favicon.replace(/\\/g, "/")}`;
+            
+            // Tìm hoặc tạo thẻ link favicon
+            let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            link.href = faviconUrl;
+            
+            // Thêm vào head nếu chưa có
+            if (!document.querySelector("link[rel*='icon']")) {
+                document.getElementsByTagName('head')[0].appendChild(link);
+            }
+        }
+    }, [formData?.favicon])
     const handleChange = (e, selectedItem) => {
         setFormData({
             ...formData,
@@ -91,32 +109,32 @@ const GlobalConfig = () => {
         dispatch(actions.updateGlobalConfigEdit(formData));
     } 
     return (
-        <div className="full pt-5">
-            <div className="w-full px-[30px] flex gap-8">
+        <div className="full pt-3 sm:pt-5">
+            <div className="w-full px-4 sm:px-6 md:px-[30px] flex gap-4 sm:gap-8">
                 <div className="w-full">
-                    <div className="flex items-center gap-2 text-[15px] text-color">
+                    <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-[15px] text-color">
                         <NavLink to={'/'} className={"hover:text-blue-600 transition duration-300 ease-linear"}>
                             Home
                         </NavLink>
-                        <MdChevronRight/>
+                        <MdChevronRight className="text-sm sm:text-base"/>
                         <NavLink to={'/global-config'} className={"text-blue-600"}>
                             Global Config
                         </NavLink>
                     </div>
-                    <h2 className="text-[35px] font-semibold">Cấu hình chung</h2>
+                    <h2 className="text-xl sm:text-2xl md:text-[35px] font-semibold mt-3 sm:mt-0">Cấu hình chung</h2>
                 </div>
             </div>
-            <form className="w-full px-[30px] bg-white mt-8" onSubmit={hanleSubmit}>
-                <div className="w-full flex border-b-custom py-10">
-                    <div className="w-2/6 ">
-                        <h5 className="text-[20px] font-medium text-black text-color mt-5">
+            <form className="w-full px-4 sm:px-6 md:px-[30px] bg-white mt-4 sm:mt-8" onSubmit={hanleSubmit}>
+                <div className="w-full flex flex-col sm:flex-row border-b-custom py-5 sm:py-10">
+                    <div className="w-full sm:w-2/6 hidden sm:block">
+                        <h5 className="text-lg sm:text-[20px] font-medium text-black text-color mt-0 sm:mt-5">
                             Thông tin cấu hình
                         </h5>
                         <p className="text-[12px] text-[#888] line-clamp-2">
                            Cập nhật thông tin cấu hình trang web của bạn
                         </p>
                     </div>
-                    <div className="flex-1">
+                    <div className="w-full sm:flex-1">
 
                         <Input 
                             label={"Tên site"}

@@ -606,6 +606,7 @@ const appReducer = (state = initState, action) => {
             return {
                 ...state,
                 message: action.payload.message,
+                globalConfig: action.payload.data || state.globalConfig,
             }
 
         /** AUTHOR CONFIG */
