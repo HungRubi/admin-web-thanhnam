@@ -1,30 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
-import { Input, Button, Combobox, Textarea } from '../components';
+import { Input, Button, Combobox, Textarea, FilePicker } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions';
 const { MdChevronRight } = icon;
 const CategoryEdit = () => {
-    const [files, setFiles] = useState([]);
-
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            files.forEach(f => URL.revokeObjectURL(f.preview));
-            setFiles([
-                {
-                    id: crypto.randomUUID(), 
-                    file,
-                    preview: URL.createObjectURL(file),
-                },
-            ]);
-        }
-    };
-
-    const removeFile = (id, setFiles, files) => {
-        setFiles(files.filter((f) => f.id !== id));
-    };
     const {id} = useParams()
     const dispatch = useDispatch();
     const {category, categoryEdit, message, tendanhmucErr, slugErr} = useSelector(state => state.app);
@@ -64,6 +45,12 @@ const CategoryEdit = () => {
             [e.target.name]: selected ? selected.id : e.target.value,
         })
     }
+    const handleAssetChange = (file) => {
+        setFormData((prev) => ({
+            ...prev,
+            image: file?.path || '',
+        }));
+    };
     const handleSubmit  = (e) => {
         e.preventDefault();
         dispatch(actions.updateCategory(id, formData))
@@ -145,65 +132,7 @@ const CategoryEdit = () => {
                         />
 
                         <div>
-                            <h1 className="block text-[16px] font-medium text-gray-800 mt-5 mb-2.5">Avatar</h1>
-                            <div className="mb-5">
-                                <label className="relative inline-block">
-                                    <input
-                                        type="file"
-                                        onChange={handleFileChange}
-                                        className="hidden"
-                                        accept="image/*"
-                                    />
-                                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded cursor-pointer hover:bg-blue-700 transition">
-                                        Chọn file
-                                    </span>
-                                </label>
-                            </div>
-
-                            <div className="w-2/3">
-                                {files.map((item) => (
-                                    <div key={item.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                                    <div className="flex items-start gap-4">
-                                        {/* File Preview */}
-                                        <div className="shrink-0">
-                                        {item.file.type.startsWith('image/') ? (
-                                            <img
-                                            src={item.preview}
-                                            alt={item.file.name}
-                                            className="w-32 h-32 object-cover rounded border border-gray-300"
-                                            />
-                                        ) : (
-                                            <div className="w-32 h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
-                                            <span className="text-gray-400 text-xs text-center px-2">No preview</span>
-                                            </div>
-                                        )}
-                                        </div>
-
-                                        {/* File Info */}
-                                        <div className="grow">
-                                        <p className="font-medium text-gray-800 break-all">{item.file.name}</p>
-                                        <p className="text-sm text-gray-500 mt-1">
-                                            {(item.file.size / 1024).toFixed(2)} KB
-                                        </p>
-                                        </div>
-
-                                        {/* Remove Button */}
-                                        <button
-                                        onClick={() => removeFile(item.id)}
-                                        className="shrink-0 text-gray-400 hover:text-red-600 transition"
-                                        >
-                                            X
-                                        </button>
-                                    </div>
-                                    </div>
-                                ))}
-
-                                {files.length === 0 && (
-                                    <div className="bg-white rounded-lg p-12 border-2 border-dashed border-gray-300 text-center">
-                                    <p className="text-gray-400">Chưa có file nào được chọn</p>
-                                    </div>
-                                )}
-                            </div>
+                            <FilePicker label="Avatar" value={formData?.image} onChange={handleAssetChange} />
                         </div>
 
                         <Textarea

@@ -26,6 +26,7 @@ import { MdChevronRight } from "react-icons/md";
 import { FiUserPlus } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { MdAutoFixHigh } from "react-icons/md";
+import { FaTrashAlt } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlineLeft } from "react-icons/ai";
 import { AiOutlineRight } from "react-icons/ai";
@@ -49,7 +50,22 @@ import { MdOutlineWidgets } from "react-icons/md";
 import { IoMenu } from "react-icons/io5";
 import { FaCaretRight } from "react-icons/fa";
 import { IoMdRefresh } from "react-icons/io";
+import { MdCloudUpload } from "react-icons/md";
+import { MdOutlineZoomOutMap } from "react-icons/md";
+import { FaFolderPlus } from "react-icons/fa";
+import { IoMdFolder } from "react-icons/io";
+import { FaFolderOpen } from "react-icons/fa";
+import { FaFileArrowDown } from "react-icons/fa6";
+import { IoMdSave } from "react-icons/io";
 const icon = {
+    IoMdSave,
+    FaFileArrowDown,
+    FaTrashAlt,
+    FaFolderOpen,
+    IoMdFolder,
+    FaFolderPlus,
+    MdOutlineZoomOutMap,
+    MdCloudUpload,
     MdOutlineWidgets,
     IoMdRefresh,
     FaCaretRight,

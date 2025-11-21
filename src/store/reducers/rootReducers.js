@@ -14,7 +14,9 @@ const userConfig = {
     ...commonConfig,
     key: 'userAdmin',
     whitelist: [
-        'currentUser', 
+        'currentUser',
+        'token',
+        'refreshToken',
     ],
 }
 

@@ -235,7 +235,7 @@ const Store = () => {
                                         }
                                     </td>
                                     <td className="px-4 py-4 w-2/15">
-                                        {item.danhmuc.tendanhmuc}
+                                        {item.danhmuc?.tendanhmuc || "NULL"}
                                     </td>
                                     <td className="px-4 py-4 w-1/10">
                                         {item.event}

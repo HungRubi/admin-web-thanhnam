@@ -39,6 +39,8 @@ const initState = {
     socialConfig: {},
     seoConfig: {},
     contentConfig: {},
+
+    files: []
 }
 
 const appReducer = (state = initState, action) => {
@@ -658,6 +660,63 @@ const appReducer = (state = initState, action) => {
                 message: action.payload.message,
             }
 
+        /** FILE */
+        case actionType.GET_FILE:
+            return {
+                ...state,
+                files: action.payload || []
+            }
+
+        case actionType.ADD_FILE:
+            return {
+                ...state,
+                message: action.payload.message,
+                files: action.payload.folder || []
+            }
+
+        case actionType.UPLOAD_FILE:
+            return {
+                ...state,
+                message: action.payload.message,
+                files: action.payload.list || []
+            }
+        case actionType.UPLOAD_FILE_ERR:
+            return {
+                ...state,
+                message: action.payload.error,
+            }
+
+        case actionType.GET_LIST_FILE:
+            return {
+                ...state,
+                files: action.payload.items || []
+            }
+
+        case actionType.UPDATE_FILE_NAME:
+            return {
+                ...state,
+                message: action.payload.message,
+                files: action.payload.list || []
+            }
+
+        case actionType.UPDATE_FILE_NAME_ERR:
+            return {
+                ...state,
+                message: action.payload.error,
+            }
+
+        case actionType.DELETE_FILE:
+            return {
+                ...state,
+                message: action.payload.message,
+                files: action.payload.list || []
+            }
+
+        case actionType.DELETE_FILE_ERR:
+            return {
+                ...state,
+                message: action.payload.error,
+            }
 
         default:
             return state;

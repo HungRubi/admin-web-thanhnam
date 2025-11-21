@@ -6,29 +6,45 @@ import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import * as actions from './store/actions'
 import "react-toastify/dist/ReactToastify.css";
+import { ProtectedRoute } from './components';
 import {
   Public, Offer, Deal, PageContent, User, CategoryAdd,
   Dashboard, Store, New, Widget, Menu, ContentConfig,
   GlobalConfig, AuthorConfig, SocialConfig, SeoConfig,
   CategoryEdit, StoreAdd, StoreEdit, OfferAdd, OfferEdit,
   DealAdd, DealEdit, NewAdd, NewEdit, PageContentAdd, PageContentEdit,
-  WidgetAdd, WidgetEdit,UserAdd,UserEdit,MenuAdd,MenuEdit, File
+  WidgetAdd, WidgetEdit,UserAdd,UserEdit,MenuAdd,MenuEdit, File, Login
 
 } from './page';
 
 function App() {
   const dispatch = useDispatch();
   const {message} = useSelector(state => state.app);
+  const { initialized } = useSelector(state => state.user);
   useEffect(() => {
     if (message) {
       toast.success(message);
+      dispatch(actions.resetMessage());
     }
-    dispatch(actions.resetMessage());
   }, [message, dispatch]);
+
+  useEffect(() => {
+    if (!initialized) {
+      dispatch(actions.getCurrentUser());
+    }
+  }, [initialized, dispatch]);
   return (
     <>
       <Routes>
-        <Route path="/" element={<Public />}>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Public />
+            </ProtectedRoute>
+          }
+        >
             <Route index element={<Dashboard />} />
             <Route path='/category/:id' element={<CategoryEdit />} />
             <Route path="/store" element={<Store />} />

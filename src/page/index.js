@@ -32,3 +32,4 @@ export {default as UserAdd} from './UserAdd';
 export {default as UserEdit} from './UserEdit';
 export {default as MenuAdd} from './MenuAdd';
 export {default as MenuEdit} from './MenuEdit';
+export {default as Login} from './Login';
