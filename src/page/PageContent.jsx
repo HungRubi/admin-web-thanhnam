@@ -159,7 +159,12 @@ const PageContent = () => {
                                         />
                                     </td>
                                     <th scope="row" className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-xs sm:text-sm text-gray-900 dark:text-white w-3/11">
-                                        <span className="line-clamp-2">{item.name}</span>
+                                        <NavLink 
+                                            to={`/page-content/${item._id}`} 
+                                            className="line-clamp-2 text-blue-500"
+                                        >
+                                            {item.name}
+                                        </NavLink>
                                     </th>
                                     <td className="px-2 sm:px-4 py-2 sm:py-4 w-3/11 text-xs sm:text-sm hidden md:table-cell">
                                         <span className="line-clamp-1">{item.slug}</span>

@@ -8,6 +8,9 @@ const initState = {
     tendanhmucErr: "",
     slugErr: "",
 
+    event: [],
+    eventEdit: {},
+
     store: [],
     storeEdit: {},
     tenstoreErr: null,
@@ -105,6 +108,61 @@ const appReducer = (state = initState, action) => {
                 ...state,
                 message: action.payload.message,
                 category: action.payload.categoryFormat || []
+            }
+
+        /** EVENT */
+        case actionType.GET_EVENT:
+            return {
+                ...state,
+                event: action.payload.search 
+                ? action.payload.data.data.searchEvent || [] 
+                : action.payload.data.data.eventFormat || [],
+            }
+
+        case actionType.GET_EVENT_EDIT:
+            return {
+                ...state,
+                eventEdit: action.payload.data.event || {},
+            }
+
+        case actionType.UPDATE_EVENT:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.UPDATE_EVENT_ERR:
+            return {
+                ...state,
+                tendanhmucErr: action.payload.tendanhmucErr,
+                slugErr: action.payload.slugErr
+            }
+
+        case actionType.ADD_EVENT:
+            return {
+                ...state,
+                message: action.payload.message
+            }
+
+        case actionType.ADD_EVENT_ERR:
+            return {
+                ...state,
+                tendanhmucErr: action.payload.tendanhmucErr,
+                slugErr: action.payload.slugErr
+            }
+
+        case actionType.DELETE_EVENT:
+            return {
+                ...state,
+                message: action.payload.message,
+                event: action.payload.eventFormat || []
+            }
+        
+        case actionType.DELETE_MANY_EVENT:
+            return {
+                ...state,
+                message: action.payload.message,
+                event: action.payload.eventFormat || []
             }
 
         /** STORE */

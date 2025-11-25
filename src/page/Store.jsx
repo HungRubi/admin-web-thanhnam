@@ -72,6 +72,7 @@ const Store = () => {
             dispatch(actions.filterStore(newFilters));
         }
     };
+    console.log(currentStore);
     return (
         <div className="full pt-3 sm:pt-5">
             {isModal && <ModelToast isOpen={isModal} setIsOpen={setIsModal} onDelete={handleDelete}/>}
@@ -214,10 +215,15 @@ const Store = () => {
                                         />
                                     </td>
                                     <th scope="row" className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-xs sm:text-sm text-gray-900 dark:text-white w-3/13">
-                                       <span className="line-clamp-2">{item.tenstore}</span>
+                                       <NavLink to={`/store/${item._id}`} className="line-clamp-2 text-blue-500">
+                                            {item.tenstore}
+                                       </NavLink>
                                     </th>
                                     <td className="py-2 sm:py-4 w-1/14 hidden sm:table-cell">
-                                        <div className="w-full">
+                                        <NavLink 
+                                            to={`/store/${item._id}`} 
+                                            className="w-full"
+                                        >
                                             {item.image ? (
                                                 <img 
                                                     src={`${import.meta.env.VITE_SERVER_URL}/${item.image?.replace(/\\/g, "/")}`} 
@@ -226,7 +232,7 @@ const Store = () => {
                                                 />
                                                 ) : (<p className='text-gray-400 px-2 sm:px-4.5 text-xs sm:text-sm'>NULL</p>)
                                             }
-                                        </div>
+                                        </NavLink>
                                     </td>
                                     <td className="px-2 sm:px-4 py-2 sm:py-4 w-2/15">
                                         {

@@ -1,4 +1,5 @@
 export * from './category'
+export * from './event'
 export * from './store'
 export * from './offer'
 export * from './deal'

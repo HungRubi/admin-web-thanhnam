@@ -175,7 +175,9 @@ const Widget = () => {
                                         />
                                     </td>
                                     <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-6/16">
-                                        {item.name}
+                                        <NavLink to={`/widget/${item._id}`} className="line-clamp-2 text-blue-500">
+                                            {item.name}
+                                        </NavLink>
                                     </th>
                                     <td className="py-4 w-2/11 ">
                                         <div className="w-full">

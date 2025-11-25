@@ -1,7 +1,7 @@
 import {CircleButton } from './index'
 import icon from '../util/icon'
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions'
 
@@ -11,6 +11,10 @@ const Header = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
     const { currentUser, loading } = useSelector(state => state.user);
     const { globalConfig } = useSelector(state => state.app);
     const [openMenu, setOpenMenu] = useState(null);
+    const logoUrl = useMemo(() => {
+        if (!globalConfig?.logo) return null;
+        return `${import.meta.env.VITE_SERVER_URL}/${globalConfig.logo.replace(/\\/g, "/")}`;
+    }, [globalConfig?.logo]);
     const toggleMenu = (menu) => {
         setOpenMenu(openMenu === menu ? null : menu);
     }
@@ -35,6 +39,20 @@ const Header = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
         }
     }, [dispatch, globalConfig]);
 
+    // Đồng bộ favicon theo cấu hình global
+    useEffect(() => {
+        if (!globalConfig?.favicon) return;
+        const faviconUrl = `${import.meta.env.VITE_SERVER_URL}/${globalConfig.favicon.replace(/\\/g, "/")}`;
+        let link = document.querySelector("link[rel*='icon']");
+        if (!link) {
+            link = document.createElement("link");
+            link.rel = "shortcut icon";
+            document.head.appendChild(link);
+        }
+        link.type = "image/x-icon";
+        link.href = faviconUrl;
+    }, [globalConfig?.favicon]);
+
     const handleLogout = async () => {
         try {
             await dispatch(actions.logout());
@@ -56,14 +74,18 @@ const Header = ({ isMobileMenuOpen, setIsMobileMenuOpen }) => {
                 >
                     <IoMenu className="text-2xl text-gray-600" />
                 </button>
-                <NavLink to={"/"}>
-                    {globalConfig && 
+                <NavLink to={"/"} className="flex items-center min-h-[40px]">
+                    {logoUrl ? (
                         <img 
-                            src={`${import.meta.env.VITE_SERVER_URL}/${globalConfig?.logo?.replace(/\\/g, "/")}`}
-                            alt={globalConfig?.logo?.name}
+                            src={logoUrl}
+                            alt={globalConfig?.name || "Logo"}
                             className='w-[50px] sm:w-[60px] md:w-[70px] ml-[5px] sm:ml-[10px] md:ml-[15px] object-contain flex-none'
                         />
-                    }
+                    ) : (
+                        <span className="ml-[5px] sm:ml-[10px] md:ml-[15px] font-semibold text-gray-700 text-lg sm:text-xl">
+                            {globalConfig?.name || "Thanh Nam Admin"}
+                        </span>
+                    )}
                 </NavLink>
             </div>
             <div className="mr-[10px] sm:mr-[20px] md:mr-[30px] flex items-center gap-2 sm:gap-3 md:gap-4">

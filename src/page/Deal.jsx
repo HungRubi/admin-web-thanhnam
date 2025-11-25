@@ -219,7 +219,11 @@ const Deal = () => {
                                         />
                                     </td>
                                     <th scope="row" className="px-2 sm:px-4 py-2 sm:py-4 font-medium text-xs sm:text-sm text-gray-900 dark:text-white w-5/12">
-                                        <span className="line-clamp-2">{item.name}</span>
+                                        <NavLink 
+                                        to={`/deal/${item._id}`} 
+                                        className="line-clamp-2 text-blue-500">
+                                            {item.name}
+                                        </NavLink>
                                     </th>
                                     <td className="py-2 sm:py-4 w-1/9 hidden sm:table-cell">
                                         <div className="w-full">

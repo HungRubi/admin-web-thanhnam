@@ -4,6 +4,7 @@ import { Input, Button, Combobox, Textarea, FilePicker } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
+import generateSlug from '../util/slug';
 const { MdChevronRight } = icon;
 const PageContentEdit = () => {
     const status = [
@@ -47,11 +48,19 @@ const PageContentEdit = () => {
         }
     }, [contentEdit])
     const handleChange = (e, selected) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: selected ? selected.id || selected._id : e.target.value,
-        })
-    }
+        const { name, value } = e.target;
+        const nextValue = selected ? selected.id || selected._id : value;
+        setFormData((prev) => {
+            const updated = {
+                ...prev,
+                [name]: nextValue,
+            };
+            if (name === "name") {
+                updated.slug = generateSlug(nextValue);
+            }
+            return updated;
+        });
+    };
     const handleAssetChange = (file) => {
         setFormData((prev) => ({
             ...prev,

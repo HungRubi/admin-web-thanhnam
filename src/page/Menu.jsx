@@ -197,7 +197,9 @@ const Menu = () => {
                                         />
                                     </td>
                                     <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-2/11">
-                                        {item.name}
+                                        <NavLink to={`/menu/${item._id}`} className="line-clamp-2 text-blue-500">
+                                            {item.name}
+                                        </NavLink>
                                     </th>
                                     <td className="px-4 py-4 w-2/11">
                                         {item.page?.name}
@@ -206,7 +208,9 @@ const Menu = () => {
                                         {item.danhmuccha?.name || "NULL"}
                                     </td>
                                     <td className="px-4 py-4 w-2/11">
-                                        {item.url}
+                                        <NavLink to={`${item.url || ""}`} target='_blank' className="line-clamp-2 text-blue-500">
+                                            {item.url || "NULL"}
+                                        </NavLink>
                                     </td>
                                     <td className="px-4 py-4 w-1/14">
                                         {

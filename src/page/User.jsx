@@ -157,7 +157,9 @@ const User = () => {
                                         />
                                     </td>
                                     <th scope="row" className="px-4 py-4 font-medium text-gray-900 dark:text-white w-2/10">
-                                        {item.hovaten}
+                                        <NavLink to={`/user/${item._id}`} className="line-clamp-2 text-blue-500">
+                                            {item.hovaten}
+                                        </NavLink>
                                     </th>
                                     <td className="px-4 py-4 w-2/10">
                                         {item.tendangnhap}

@@ -24,6 +24,8 @@ export {default as DealAdd} from './DealAdd';
 export {default as DealEdit} from './DealEdit';
 export {default as NewAdd} from './NewAdd';
 export {default as NewEdit} from './NewEdit';
+export {default as EventAdd} from './EventAdd';
+export {default as EventEdit} from './EventEdit';
 export {default as PageContentAdd} from './PageContentAdd';
 export {default as PageContentEdit} from './PageContentEdit';
 export {default as WidgetAdd} from './WidgetAdd';
