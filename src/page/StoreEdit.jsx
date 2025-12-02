@@ -5,6 +5,7 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 import generateSlug from '../util/slug';
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const StoreEdit = () => {
     const {id} = useParams();
@@ -91,7 +92,12 @@ const StoreEdit = () => {
     };
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.updateStore(id, formData))
+        const submitData = { ...formData };
+        // Auto-fill motangan if empty
+        if (!submitData.motangan || submitData.motangan.trim() === '') {
+            submitData.motangan = generateDescription('store', submitData.tenstore);
+        }
+        dispatch(actions.updateStore(id, submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {

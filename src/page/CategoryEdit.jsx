@@ -5,6 +5,7 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions';
 import generateSlug from '../util/slug';
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const CategoryEdit = () => {
     const {id} = useParams()
@@ -42,7 +43,7 @@ const CategoryEdit = () => {
     }, [categoryEdit])
     const handleChange = (e, selected) => {
         const { name, value } = e.target;
-        const nextValue = selected ? selected.id : value;
+        const nextValue = selected ? selected.id || selected._id : value;
         setFormData((prev) => {
             const updated = {
                 ...prev,
@@ -62,7 +63,12 @@ const CategoryEdit = () => {
     };
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.updateCategory(id, formData))
+        const submitData = { ...formData };
+        // Auto-fill mota if empty
+        if (!submitData.mota || submitData.mota.trim() === '') {
+            submitData.mota = generateDescription('category', submitData.tendanhmuc);
+        }
+        dispatch(actions.updateCategory(id, submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {
@@ -70,6 +76,7 @@ const CategoryEdit = () => {
             navigate("/")
         }
     }, [message, navigate])
+    console.log(formData);
     return (
         <div className="full pt-3 sm:pt-5">
             <div className="w-full px-4 sm:px-6 md:px-[30px] flex gap-4 sm:gap-8">
@@ -84,10 +91,10 @@ const CategoryEdit = () => {
                         </NavLink>
                         <MdChevronRight className="text-sm sm:text-base"/>
                         <NavLink to={'/category-add'} className={"text-blue-600"}>
-                            Thêm mới danh mục
+                            Chỉnh sửa danh mục
                         </NavLink>
                     </div>
-                    <h2 className="text-xl sm:text-2xl md:text-[35px] font-semibold mt-3 sm:mt-0">Thêm mới danh mục</h2>
+                    <h2 className="text-xl sm:text-2xl md:text-[35px] font-semibold mt-3 sm:mt-0">Chỉnh sửa danh mục</h2>
                 </div>
             </div>
             <form className="w-full px-4 sm:px-6 md:px-[30px] bg-white mt-4 sm:mt-8 min-h-screen" onSubmit={handleSubmit}>
@@ -149,8 +156,11 @@ const CategoryEdit = () => {
                             name={"mota"}
                             row={5}
                             onChange={handleChange}
-                            children={formData?.mota}
+                            value={formData?.mota}
                         />
+                        <p className="mt-1 text-xs text-gray-500 italic">
+                            Nếu không điền hiện thống sẽ tự tạo tự động
+                        </p>
                         <Input 
                             label={"Meta title"} 
                             name={"metatitle"}

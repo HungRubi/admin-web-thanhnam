@@ -182,7 +182,7 @@ const GlobalConfig = () => {
                         <Input 
                             label={"Tên công ty"} 
                             placeholder={"Tên công ty"} 
-                            name={"companyName"}
+                            name={"nameCompany"}
                             onChange={handleChange}
                             value={formData?.nameCompany}
                         />

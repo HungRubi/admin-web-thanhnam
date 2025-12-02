@@ -216,7 +216,7 @@ const FilePicker = ({ label, onChange, value }) => {
               </button>
             </div>
 
-            <div className="flex flex-1">
+            <div className="flex flex-1 overflow-y-scroll">
               <div className="w-64 flex flex-col border-r border-r-[#c9c3c3d0] bg-gray-50">
                 <div
                   className={`w-full px-4 py-3 flex items-center gap-3 border-b border-b-[#c9c3c3d0] cursor-pointer ${

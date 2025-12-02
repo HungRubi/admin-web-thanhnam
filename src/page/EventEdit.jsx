@@ -5,6 +5,7 @@ import icon from "../util/icon";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
 import generateSlug from "../util/slug";
+import generateDescription from "../util/generateDescription";
 
 const { MdChevronRight } = icon;
 
@@ -70,7 +71,12 @@ const EventEdit = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(actions.updateEvent(id, formData));
+        const submitData = { ...formData };
+        // Auto-fill mota if empty
+        if (!submitData.mota || submitData.mota.trim() === '') {
+            submitData.mota = generateDescription('event', submitData.tendanhmuc);
+        }
+        dispatch(actions.updateEvent(id, submitData));
     };
 
     const navigate = useNavigate();
@@ -213,4 +219,5 @@ const EventEdit = () => {
 };
 
 export default EventEdit;
+
 

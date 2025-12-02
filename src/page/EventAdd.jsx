@@ -5,6 +5,7 @@ import icon from "../util/icon";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
 import generateSlug from "../util/slug";
+import generateDescription from "../util/generateDescription";
 
 const { MdChevronRight } = icon;
 
@@ -52,7 +53,12 @@ const EventAdd = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(actions.addEvent(formData));
+        const submitData = { ...formData };
+        // Auto-fill mota if empty
+        if (!submitData.mota || submitData.mota.trim() === '') {
+            submitData.mota = generateDescription('event', submitData.tendanhmuc);
+        }
+        dispatch(actions.addEvent(submitData));
     };
 
     const navigate = useNavigate();
@@ -141,7 +147,7 @@ const EventAdd = () => {
                         />
 
                         <div>
-                            <FilePicker label="Image" onChange={handleAssetChange} />
+                            <FilePicker label="Image" value={formData?.image} onChange={handleAssetChange} />
                         </div>
 
                         <Textarea
@@ -196,4 +202,5 @@ const EventAdd = () => {
 };
 
 export default EventAdd;
+
 

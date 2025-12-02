@@ -4,6 +4,7 @@ import { Input, Button, Combobox, Textarea, FilePicker } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const WidgetEdit = () => {
     const duyetbatData = [
@@ -66,7 +67,12 @@ const WidgetEdit = () => {
     };
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.updateWidget(id, formData))
+        const submitData = { ...formData };
+        // Auto-fill description if empty
+        if (!submitData.description || submitData.description.trim() === '') {
+            submitData.description = generateDescription('widget', submitData.name);
+        }
+        dispatch(actions.updateWidget(id, submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {

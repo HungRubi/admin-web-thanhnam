@@ -5,6 +5,7 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 import generateSlug from '../util/slug';
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const CategoryAdd = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const CategoryAdd = () => {
     })
     const handleChange = (e, selected) => {
         const { name, value } = e.target;
-        const nextValue = selected ? selected.id : value;
+        const nextValue = selected ? selected.id || selected._id : value;
         setFormData((prev) => {
             const updated = {
                 ...prev,
@@ -45,7 +46,12 @@ const CategoryAdd = () => {
     };
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.addCategory(formData))
+        const submitData = { ...formData };
+        // Auto-fill mota if empty
+        if (!submitData.mota || submitData.mota.trim() === '') {
+            submitData.mota = generateDescription('category', submitData.tendanhmuc);
+        }
+        dispatch(actions.addCategory(submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {
@@ -125,7 +131,7 @@ const CategoryAdd = () => {
                             selected={formData?.danhmuccha}
                         />
                         <div>
-                            <FilePicker label="Image" onChange={handleAssetChange} />
+                            <FilePicker label="Image" value={formData?.image} onChange={handleAssetChange} />
                         </div>
 
                         <Textarea
@@ -135,6 +141,9 @@ const CategoryAdd = () => {
                             onChange={handleChange}
                             children={formData?.mota}
                         />
+                        <p className="mt-1 text-xs text-gray-500 italic">
+                            Nếu không điền hiện thống sẽ tự tạo tự động
+                        </p>
                         <Input 
                             label={"Meta title"} 
                             name={"metatitle"}

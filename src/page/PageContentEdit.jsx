@@ -5,6 +5,7 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 import generateSlug from '../util/slug';
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const PageContentEdit = () => {
     const status = [
@@ -69,7 +70,12 @@ const PageContentEdit = () => {
     };
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.updateContent(id, formData))
+        const submitData = { ...formData };
+        // Auto-fill description if empty
+        if (!submitData.description || submitData.description.trim() === '') {
+            submitData.description = generateDescription('pageContent', submitData.name);
+        }
+        dispatch(actions.updateContent(id, submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {

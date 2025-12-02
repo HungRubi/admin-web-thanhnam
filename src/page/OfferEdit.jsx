@@ -4,6 +4,7 @@ import { Input, Button, Combobox, Textarea } from '../components';
 import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const OfferEdit = () => {
     const {id} = useParams();
@@ -55,7 +56,12 @@ const OfferEdit = () => {
     }
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.updateOffer(id, formData))
+        const submitData = { ...formData };
+        // Auto-fill description if empty
+        if (!submitData.description || submitData.description.trim() === '') {
+            submitData.description = generateDescription('offer', submitData.name);
+        }
+        dispatch(actions.updateOffer(id, submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {

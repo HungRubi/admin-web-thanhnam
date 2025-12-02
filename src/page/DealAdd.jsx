@@ -5,6 +5,7 @@ import icon from '../util/icon';
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../store/actions'
 import generateSlug from '../util/slug';
+import generateDescription from '../util/generateDescription';
 const { MdChevronRight } = icon;
 const DealAdd = () => {
     const danhmucData = [
@@ -34,7 +35,7 @@ const DealAdd = () => {
         url: '',
         image: '',
         duyet: '',
-        description: '',
+        motangan: '',
         metatitle: '',
         metadescription: '',
         metakeywords: '',
@@ -61,7 +62,12 @@ const DealAdd = () => {
     };
     const handleSubmit  = (e) => {
         e.preventDefault();
-        dispatch(actions.addDeal(formData))
+        const submitData = { ...formData };
+        // Auto-fill motangan if empty
+        if (!submitData.motangan || submitData.motangan.trim() === '') {
+            submitData.motangan = generateDescription('deal', submitData.name);
+        }
+        dispatch(actions.addDeal(submitData))
     }
     const navigate = useNavigate();
     useEffect(() => {

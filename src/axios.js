@@ -14,7 +14,7 @@ instance.interceptors.response.use(function (response) {
     return response;
   }, function (error) {
     return Promise.reject(error);
-  });
+});
 
 export const setAuthToken = (token) => {
   if (token) {

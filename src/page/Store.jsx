@@ -198,13 +198,13 @@ const Store = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {store && currentStore?.length > 0 ? currentStore?.map((item) => (
+                            {store && currentStore?.length > 0 ? currentStore?.map((item, index) => (
                                 <tr 
                                     key={item._id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 row-table"
                                 >
                                     <td className="px-1 sm:px-2 py-2 sm:py-4 w-8 sm:w-10 text-center">
-                                        <span className='text-xs sm:text-base font-semibold'>1</span>
+                                        <span className='text-xs sm:text-base font-semibold'>{index + 1}</span>
                                     </td>
                                     <td className="px-1 sm:px-2 py-2 sm:py-4 w-8 sm:w-10">
                                         <input 

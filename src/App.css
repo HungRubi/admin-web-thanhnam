@@ -13,6 +13,9 @@ button{
 .bg-div{
     background: #f3f3f3;
 }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 .text-main{
     color: #2f904b;
 }

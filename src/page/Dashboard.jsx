@@ -104,7 +104,7 @@ const Dashboard = () => {
             dispatch(actions.getDeal(value));
         }
     }
-    console.log(event);
+    
     const getAddLink = () => {
         if(selectedType == 1 || selectedType === '1') return '/new/add';
         if(selectedType == 2 || selectedType === '2') return '/event/add';
