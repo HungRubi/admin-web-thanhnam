@@ -185,7 +185,7 @@ const appReducer = (state = initState, action) => {
                 ...state,
                 danhmucErr: action.payload.danhmucErr,
                 tenstoreErr: action.payload.tenstoreErr,
-                slugErr: action.payload.slugErr
+                slugErr: action.payload.slugErr,
             }
 
         case actionType.DELETE_STORE:
@@ -246,6 +246,7 @@ const appReducer = (state = initState, action) => {
                 nameOffer: action.payload.nameEmpty,
                 storeEmpty: action.payload.storeEmpty,
                 codeEmpty: action.payload.codeEmpty,
+                storeErr: action.payload.storeErr
             }
 
         case actionType.GET_OFFER:
@@ -274,6 +275,7 @@ const appReducer = (state = initState, action) => {
                 nameOffer: action.payload.nameEmpty,
                 storeEmpty: action.payload.storeEmpty,
                 codeEmpty: action.payload.codeEmpty,
+                storeErr: action.payload.storeErr
             }
 
         case actionType.DELETE_OFFER:

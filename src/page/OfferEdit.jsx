@@ -19,7 +19,7 @@ const OfferEdit = () => {
         }
     ]
     const dispatch = useDispatch();
-    const {store, message, nameOffer, storeEmpty,codeEmpty, offerEdit} = useSelector(state => state.app)
+    const {store, message, nameOffer, storeEmpty, codeEmpty, offerEdit, storeErr} = useSelector(state => state.app)
     useEffect(() => {
         dispatch(actions.getOfferEdit(id));
         dispatch(actions.getStore());
@@ -119,6 +119,12 @@ const OfferEdit = () => {
                             onChange={handleChange}
                             value={formData?.offer}
                         />
+                        {
+                            storeEmpty && 
+                            <p className="text-red-500 text-[11px] mt-1">
+                                {storeEmpty}
+                            </p>
+                        }
                         <Input 
                             label={"Code"} 
                             name={"code"}
@@ -147,9 +153,9 @@ const OfferEdit = () => {
                             selected={formData?.store}
                         />
                         {
-                            storeEmpty && 
+                            storeErr && 
                             <p className="text-red-500 text-[11px] mt-1">
-                                {storeEmpty}
+                                {storeErr}
                             </p>
                         }
                         <Textarea 
