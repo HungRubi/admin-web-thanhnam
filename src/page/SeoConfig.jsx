@@ -75,7 +75,7 @@ const SeoConfig = () => {
                         <Textarea 
                             label={"Meta keyword"} 
                             row={5} 
-                            name={"metaKeyword"}
+                            name={"metaKeywords"}
                             onChange={handleChange}
                             children={formData?.metaKeywords}
                         />
@@ -89,7 +89,7 @@ const SeoConfig = () => {
                         <Textarea 
                             label={"Google Analytics Code"} 
                             row={5} 
-                            name={"googleAnalyticsCode"}
+                            name={"googleAnalyticCode"}
                             onChange={handleChange}
                             children={formData?.googleAnalyticCode}
                         />
